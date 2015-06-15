@@ -5,3 +5,17 @@
  *  Issues https://github.com/TomYum/ty-push-menu/issues
  */
 
+
+@mixin position($position){
+    $position: 0px;
+    margin-#{$position}: -100%; 
+}
+
+
+
+
+
+
+.ty-pushmenu-icon {
+    display: inline-block;     
+}

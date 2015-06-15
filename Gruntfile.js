@@ -22,11 +22,11 @@ module.exports = function ( grunt ) {
                     }
                 },
                 files: {
-                    'src/js/ty.pushmenu.min.js': [
-                        '_dev/js/app.js'
+                    'dist/js/ty.pushmenu.min.js': [
+                        'src/js/ty.pushmenu.js'
                     ]
                 }
-            },
+            }
         },
         cssmin: {
             options: {
@@ -43,7 +43,7 @@ module.exports = function ( grunt ) {
         },
         watch: {
             options: {
-                livereload: true,
+                livereload: false,
             },
             grunt: {
                 options: {
@@ -53,13 +53,13 @@ module.exports = function ( grunt ) {
                 tasks: ['recreate']
             },
             sass: {
-                files: ['src/scss/**', 'admin-cont/css/scss/*.scss'],
+                files: ['src/scss/**'],
                 tasks: ['sass', 'cssmin']
             },
             js: {
-                files: ['src/js/**'],
+                files: ['src/js/*', 'src/js/**'],
                 tasks: ['uglify']
-            },
+            }
         }
     } );
     grunt.loadNpmTasks( 'grunt-contrib-uglify' );
