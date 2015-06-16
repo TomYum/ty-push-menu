@@ -32,7 +32,7 @@
 
     tyPushMenu.prototype.init = function () {
         this.config = $.extend( {}, this.defaults, this.options, this.metaData );
-        this.$elem.addClass( 'ty-pushmenu-wrapper' )
+        this.$elem.addClass( 'ty-pushmenu-wrapper-ul' )
                 .addClass( 'ty-pushmenu-' + this.config.position )
                 ;
         this.registrTrigger();
