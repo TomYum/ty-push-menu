@@ -16,7 +16,7 @@ module.exports = function ( grunt ) {
             dist: {
                 options: {
                     sourceMap: true,
-                    sourceMapName: 'resources/js/ty.pushmenu.map',
+                    sourceMapName: 'dist/js/ty.pushmenu.map',
                     mangle: {
                         except: ['jQuery', 'Backbone']
                     }
