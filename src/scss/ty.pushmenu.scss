@@ -6,16 +6,52 @@
  */
 
 
-@mixin position($position){
-    $position: 0px;
-    margin-#{$position}: -100%; 
+$positions : top left bottom right;
+
+@mixin position($p){
+    #{$p}: 0px;
+    margin-#{$p}: -100%; 
+}
+
+$color-dark-grey: #454545;
+
+
+@each $pos in $positions {
+    /*
+        @keyframes menu-slide-to-#{$pos} {
+            0% { margin-#{$pos}: -100%; }
+            85% { margin-#{$pos}: -10%; }
+            95% { margin-#{$pos}: 2%; }
+            96% { margin-#{$pos}: -2%; }
+            97% { margin-#{$pos}: 1%; }
+            98% { margin-#{$pos}: -1%; }
+            99% { margin-#{$pos}: 0%; }
+            100% { margin-#{$pos}: 0%; }
+        }
+        /**/
+
+    .ty-pushmenu-#{$pos} {
+        @include position($pos);
+    }
+
 }
 
 
 
 
 
+.ty-pushmenu-wrapper{
+    background: $color-dark-grey;
+    display: none;
+
+}
+
 
 .ty-pushmenu-icon {
     display: inline-block;     
+}
+
+
+.ty-pushmenu-show{
+    display: block !important;
 }

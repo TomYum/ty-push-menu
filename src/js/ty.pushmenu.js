@@ -17,6 +17,7 @@
     var tyPushMenu = function ( elem, options ) {
         this.elem = elem;
         this.$elem = $( elem );
+        this.parent = $( elem ).parent();
         this.options = options;
         this.metaData = this.$elem.data( 'tyPushMenu' );
     };
@@ -24,12 +25,16 @@
 
     tyPushMenu.prototype.defaults = {
         menuTrigger: '.ty-pushmenu-trigger',
-        animationEngine: 'css' // css or js
-
+        animationEngine: 'css', // css or js
+        position: 'left',
+        pushElement: 'parent',
     };
 
     tyPushMenu.prototype.init = function () {
         this.config = $.extend( {}, this.defaults, this.options, this.metaData );
+        this.$elem.addClass( 'ty-pushmenu-wrapper' )
+                .addClass( 'ty-pushmenu-' + this.config.position )
+                ;
         this.registrTrigger();
         return this;
     };
@@ -46,8 +51,9 @@
     };
 
     tyPushMenu.prototype.registrTrigger = function () {
+        var tyPushMenu = this;
         $( document ).on( 'click', this.config.menuTrigger, function () {
-            (this.config.animationEngine === 'css') ? this.$elem.toggleClass( 'ty-pushmenu-show' ) : this.toggleMenu();
+            (tyPushMenu.config.animationEngine === 'css') ? tyPushMenu.$elem.toggleClass( 'ty-pushmenu-show' ) : tyPushMenu.toggleMenu();
         } );
     };
 
