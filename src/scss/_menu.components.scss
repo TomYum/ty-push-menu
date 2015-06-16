@@ -1,0 +1,54 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 16.06.2015, 23:27:27
+    Author     : tomyum
+*/
+
+
+.ty-push-menu{
+    position: fixed;
+    z-index: 200;
+    background-color: $color-dark-gray;
+    transition: transform 0.3s;
+}
+
+
+.ty-push-menu-item{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.ty-push-menu-left,
+.ty-push-menu-right{
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+
+    @media all and (min-width: $menu-break) {
+        width: $menu; 
+    }
+
+}
+
+
+.ty-push-menu-item{
+    &.ty-pm-left,&.ty-pm-right{
+        display: block;
+        text-align: center;
+        border-top: solid 1px $color--theme-light;
+        border-bottom: solid 1px $color--theme-dark;
+
+        &:first-child {
+            border-top: none;
+        }
+
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+}
