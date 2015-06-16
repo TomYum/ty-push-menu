@@ -43,7 +43,7 @@ module.exports = function ( grunt ) {
         },
         watch: {
             options: {
-                livereload: false,
+                livereload: true,
             },
             grunt: {
                 options: {
