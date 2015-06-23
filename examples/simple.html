@@ -14,11 +14,26 @@ and open the template in the editor.
         <script src="../src/js/ty.pushmenu.js"></script>
 
         <style>
-            body { margin: 0px; padding: 0px;}
+            body { margin: 0px; padding: 0px; background: #fafafa;}
             header { background: #0d3349; color: #fafafa; min-height: 50px; margin: 0px 0px 10px 0px; padding: 20px 10px; }
             footer { background: #444; color: #fafafa; min-height: 50px; margin: 0px 0px 10px 0px; padding: 20px 10px; }
 
             .any-content{ background: #044; padding: 2.6rem; margin: 2rem; display: inline-block;}
+            .trigger{
+                padding: 1em;
+                margin: 1em;
+                box-sizing: border-box;
+                background: #036;
+                border: 0.2em solid #0d3349;
+                border-radius: 0.3em;
+                box-shadow: 0 0 0.4em #333;
+                display: inline-block;
+                cursor: pointer;
+                color: #faffaa;
+            }
+            .trigger{
+
+            }
         </style>
 
 
@@ -31,7 +46,44 @@ and open the template in the editor.
 
 
 
-            <ul class="ty-pushmenu ty-push-top">
+            <ul class="ty-pushmenu-top">
+                <h2>right menu</h2>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">production</a>
+                    <ul>                                        
+                        <li><a href="#">link 1</a></li>
+                        <li><a href="#">link 2</a></li>
+                        <li><a href="#">link 3</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+            <ul class="ty-pushmenu-bottom">
+                <h2>right menu</h2>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">production</a>
+                    <ul>                                        
+                        <li><a href="#">link 1</a></li>
+                        <li><a href="#">link 2</a></li>
+                        <li><a href="#">link 3</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+            <ul class="ty-pushmenu-right">
+                <h2>right menu</h2>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">production</a>
+                    <ul>                                        
+                        <li><a href="#">link 1</a></li>
+                        <li><a href="#">link 2</a></li>
+                        <li><a href="#">link 3</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+
+            <ul class="ty-pushmenu-left">
                 <li><a href="#">Home</a></li>
                 <li><a href="#">production</a>
                     <ul>                                        
@@ -44,22 +96,42 @@ and open the template in the editor.
                 <li><a href="#">link 2</a></li>
                 <li><a href="#">link 3</a></li>
 
+
             </ul>
 
-
-            <div class="any-content">ASDASDA asD ASD ASd asD ASDASDa  sdASD ASD ASd asD ASD ASDASdas DASD</div>
-
-
-            <div class="trigger">
-                TRIGGER
+            <div class="trigger trigger-left">
+                <-||
             </div>
+            <div class="trigger trigger-right">
+                ||->
+            </div>
+            <div class="trigger trigger-top">
+                |^|
+            </div>
+            <div class="trigger trigger-bottom">
+                |_|
+            </div>
+            <div class="any-content">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam convallis placerat dui, id accumsan magna sollicitudin id. Nunc mollis lorem non risus semper pulvinar. Curabitur scelerisque nec lorem id egestas. Nunc sit amet accumsan nibh, nec tincidunt ipsum. Interdum et malesuada fames ac ante ipsum primis in faucibus. Vivamus sit amet urna vehicula lorem auctor rutrum in a nulla. Duis id iaculis nibh, a euismod eros. Nam quam urna, fringilla et finibus nec, blandit scelerisque risus. Phasellus et dignissim lectus. Nam elementum enim vitae neque dapibus, et convallis massa tincidunt. Phasellus at tortor aliquet, iaculis nibh sit amet, cursus ex. <p>
+            </div>
+            <p>Sed non ligula semper, dignissim justo vitae, ornare risus. Quisque gravida leo pharetra porttitor rutrum. Quisque eu posuere sem. Etiam ac lorem dignissim, condimentum turpis eu, ornare ante. Nam consectetur orci a velit lacinia posuere. Proin convallis ipsum at dolor dapibus aliquam. Proin neque mauris, luctus eu turpis nec, elementum consectetur risus. Phasellus dignissim libero non augue eleifend placerat. Morbi sollicitudin ligula quis venenatis eleifend. Phasellus finibus venenatis magna, sit amet fermentum massa rhoncus eu. Cras vel mauris sollicitudin, volutpat urna ac, dignissim tellus. Duis eget eros velit. </p>
+            <p> Donec non erat augue. Duis quis accumsan est, quis volutpat elit. Aliquam vitae placerat ante. Aenean posuere euismod dolor, ac rhoncus nisl vestibulum malesuada. Donec egestas dolor a vulputate sodales. Suspendisse sapien sem, porttitor nec lectus eu, pharetra porttitor diam. Maecenas semper consequat diam, sed maximus felis posuere ut. Interdum et malesuada fames ac ante ipsum primis in faucibus. Quisque a justo vehicula, pharetra massa sit amet, gravida sem. Morbi molestie velit vel dolor mollis fermentum. Nam quis odio quis risus sagittis fermentum ut eu turpis. Donec auctor sem velit, in faucibus tortor porttitor quis. Fusce sollicitudin velit et fringilla gravida. Sed dignissim sapien at sapien mollis, at vestibulum justo rutrum. Pellentesque ut consequat metus.</p>
+            <p>Suspendisse aliquam ex vitae laoreet hendrerit. Nam ut magna porta, facilisis odio nec, tempor sem. Integer ac risus gravida libero ullamcorper venenatis. Pellentesque eget lacus ipsum. Ut molestie urna sed sapien accumsan convallis. Sed facilisis tincidunt sem, in malesuada dui commodo at. Aliquam pellentesque viverra enim, quis porta nunc consequat sed.</p>
+            <p>Donec erat mi, maximus malesuada pellentesque et, ullamcorper sit amet felis. Praesent cursus mi a tempor condimentum. Donec mattis justo ut aliquam convallis. Aliquam fringilla dolor nibh, quis molestie nisl porta sed. Fusce vitae dictum sem. Quisque ligula eros, eleifend ac est quis, sollicitudin rutrum erat. Integer lobortis nisi ut lectus iaculis, nec lobortis metus volutpat. Ut sagittis tempor justo, ut ullamcorper risus.</p>
+
+
+
+
         </div>
         <footer>
-            BY! 234
+            Sed non ligula semper, dignissim justo vitae, ornare risus
         </footer>
 
     </body>
     <script>
-        $( '.ty-pushmenu' ).tyPushMenu({menuTrigger : '.trigger'} );
+        $( '.ty-pushmenu-left' ).tyPushMenu({menuTrigger : '.trigger-left', position: 'left'} );
+        $( '.ty-pushmenu-top' ).tyPushMenu({menuTrigger : '.trigger-top', position: 'top'} );
+        $( '.ty-pushmenu-bottom' ).tyPushMenu({menuTrigger : '.trigger-bottom', position: 'bottom'} );
+        $( '.ty-pushmenu-right' ).tyPushMenu({menuTrigger : '.trigger-right', position: 'right'} );
     </script>
 </html>

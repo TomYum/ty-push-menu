@@ -21,10 +21,22 @@
         this.options = options;
         this.metaData = this.$elem.data( 'tyPushMenu' );
         this.isVisiable = false;
-
+        this.colapsedPosition = {x: 0, y: 0, z: 0};
+        this.expandedPosition = {x: 0, y: 0, z: 0};
+        this.width = 0;
+        this.height = 0;
+        this.pushElement;
     };
 
 
+    tyPushMenu.prototype.expandedMenus = [];
+
+    tyPushMenu.prototype.hideAll = function () {
+
+        for ( var i = 0; i < tyPushMenu.prototype.expandedMenus.length; i++ ) {
+            tyPushMenu.prototype.expandedMenus[i].hideMenu();
+        }
+    };
 
     /**
      * Default settings
@@ -34,12 +46,22 @@
         animationEngine: 'css', // css or js
         position: 'left',
         pushElement: 'body',
-        defaultPosition: {x: 0, y: 0, z: 0},
-        width: 0,
-        height: 0,
         overlay: true
     };
 
+    tyPushMenu.prototype.initContentWrapper = function () {
+        /** 
+         * @todo может по-другому?
+         */
+        if ( !$( '.ty-pm-content-wrapper' ).length ) {
+            var contenWrapper = $( '<div>' )
+                    .addClass( 'ty-pm-content-wrapper' )
+                    .addClass( 'ty-pm-push-element' );
+            $( this.config.pushElement ).children().appendTo( contenWrapper );
+            contenWrapper.appendTo( $( 'body' ) );
+        }
+        this.pushElement = '.ty-pm-content-wrapper';
+    };
 
     /**
      * init menu
@@ -47,6 +69,10 @@
      */
     tyPushMenu.prototype.init = function () {
         this.config = $.extend( {}, this.defaults, this.options, this.metaData );
+
+
+        if ( this.config.pushElement === 'body' )
+            this.initContentWrapper();
 
         var wrapper = $( '<div>' )
                 .addClass( 'ty-pushmenu-wrapper' )
@@ -64,30 +90,34 @@
         var displayY = $( window ).height() * 1;
 
 
-        this.config.height = height;
-        this.config.width = width;
+        this.height = height;
+        this.width = width;
 
         if ( this.config.position === 'left' ) {
-            this.config.defaultPosition.x = -width;
+            this.colapsedPosition.x = -width;
+            this.expandedPosition.x = 0;
         }
         if ( this.config.position === 'right' ) {
-            this.config.defaultPosition.x = displayX + width;
+            this.colapsedPosition.x = displayX + width;
+            this.expandedPosition.x = displayX - width;
         }
         if ( this.config.position === 'top' ) {
-            this.config.defaultPosition.y = -height;
+            this.colapsedPosition.y = -height;
+            this.expandedPosition.y = 0;
         }
         if ( this.config.position === 'bottom' ) {
-            this.config.defaultPosition.y = displayY + height;
+            this.colapsedPosition.y = displayY + height;
+            this.expandedPosition.y = displayY - height;
         }
 
 
         wrapper.css( {'transform': 'translate3d('
-                    + this.config.defaultPosition.x + 'px,'
-                    + this.config.defaultPosition.y + 'px,'
-                    + this.config.defaultPosition.z + 'px)'} );
+                    + this.colapsedPosition.x + 'px,'
+                    + this.colapsedPosition.y + 'px,'
+                    + this.colapsedPosition.z + 'px)'} );
 
 
-        $( 'body' ).addClass( 'ty-pm-push-element' );
+        //$( 'body' ).addClass( 'ty-pm-push-element' );
         this.registrTrigger();
         if ( this.config.overlay ) {
             this.initOverlay();
@@ -103,49 +133,88 @@
 
     /**
      * show menu
-     * @returns {undefined}
+     * @returns {this}
      */
     tyPushMenu.prototype.showMenu = function () {
+        var wrapper = this.$elem.parent( '.ty-pushmenu-wrapper' );
+        wrapper.addClass( 'animated' );
         if ( !this.isVisiable ) {
+
             this.isVisiable = true;
-            if ( this.config.position === 'left' || this.config.position === 'right' ) {
 
-                var pushedElm = $( this.config.pushElement );
+            var pushedElm = $( this.pushElement );
 
-                var pElmPosition = this.config.defaultPosition;
-                pElmPosition.x *= -1;
-                this.moveTo( pushedElm, pElmPosition );
-                //this.$elem.parent( '.ty-pushmenu-wrapper' ).show();
-                //this.moveTo( this.$elem.parent( '.ty-pushmenu-wrapper' ), {x: 0, y: 0, z: 0} );
-
-
-                this.showOverlay();
+            var pElmPosition = Object.create( this.colapsedPosition );
+            if ( this.config.position === 'left' ) {
+                pElmPosition.x = this.width;
             }
+            if ( this.config.position === 'right' ) {
+                pElmPosition.x = -this.width;
+            }
+            if ( this.config.position === 'top' ) {
+                pElmPosition.y = this.height;
+            }
+            if ( this.config.position === 'bottom' ) {
+                pElmPosition.y = -this.height;
+            }
+
+
+
+
+            this.moveTo( pushedElm, pElmPosition );
+
+            this.$elem.show();
+            this.moveTo( wrapper, this.expandedPosition );
+
+            this.showOverlay();
+            this.expandedMenus.push( this );
+            //alert( this.expandedMenus.length );
         }
 
+        return this;
     };
 
     tyPushMenu.prototype.hideMenu = function () {
         if ( this.isVisiable ) {
-            this.isVisiable = true;
-            if ( this.config.position === 'left' || this.config.position === 'right' ) {
-                var pushedElm = $( this.config.pushElement );
-                var pElmPosition = this.config.defaultPosition;
-                pElmPosition.x = 0;
-                pushedElm.css( {'transform': 'translate3d(' + pElmPosition.x + 'px,' + pElmPosition.y + 'px,' + pElmPosition.z + 'px)'} );
-                this.showOverlay();
-            }
+            this.isVisiable = false;
+            var pushedElm = $( this.pushElement );
+            var pElmPosition = this.colapsedPosition;
+
+            this.moveTo( pushedElm, {x: 0, y: 0, z: 0} );
+            this.moveTo( this.$elem.parent( '.ty-pushmenu-wrapper' ), pElmPosition );
+            this.hideOverlay();
         }
+        return this;
+    };
+
+    tyPushMenu.prototype.toggle = function () {
+        return (this.isVisiable) ? this.hideMenu() : this.showMenu();
     };
 
 
-
     tyPushMenu.prototype.initOverlay = function () {
+        var overlay = $( '#ty-overlay' );
+        var tyPushMenu = this;
+        if ( !overlay.length ) {
+            overlay = $( '<div>' )
+                    .attr( 'id', 'ty-overlay' )
+                    .click( tyPushMenu.hideAll )
+                    .appendTo( $( 'body' ) );
+        }
+    };
+
+    tyPushMenu.prototype.hideOverlay = function () {
+        var overlay = $( '#ty-overlay' );
+        if ( overlay.length ) {
+            overlay.removeClass( 'show' );
+        }
     };
 
     tyPushMenu.prototype.showOverlay = function () {
         var overlay = $( '#ty-overlay' );
-        overlay.show();
+        if ( overlay.length ) {
+            overlay.addClass( 'show' );
+        }
     };
 
     /**
@@ -158,7 +227,7 @@
 
         var tyPushMenu = this;
         $( document ).on( 'click', this.config.menuTrigger, function () {
-            tyPushMenu.showMenu();
+            tyPushMenu.toggle();
         } );
     };
 
