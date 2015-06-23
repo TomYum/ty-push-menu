@@ -16,17 +16,17 @@ module.exports = function ( grunt ) {
             dist: {
                 options: {
                     sourceMap: true,
-                    sourceMapName: 'resources/js/ty.pushmenu.map',
+                    sourceMapName: 'dist/js/ty.pushmenu.map',
                     mangle: {
                         except: ['jQuery', 'Backbone']
                     }
                 },
                 files: {
-                    'src/js/ty.pushmenu.min.js': [
-                        '_dev/js/app.js'
+                    'dist/js/ty.pushmenu.min.js': [
+                        'src/js/ty.pushmenu.js'
                     ]
                 }
-            },
+            }
         },
         cssmin: {
             options: {
@@ -53,13 +53,13 @@ module.exports = function ( grunt ) {
                 tasks: ['recreate']
             },
             sass: {
-                files: ['src/scss/**', 'admin-cont/css/scss/*.scss'],
+                files: ['src/scss/**'],
                 tasks: ['sass', 'cssmin']
             },
             js: {
-                files: ['src/js/**'],
+                files: ['src/js/*', 'src/js/**'],
                 tasks: ['uglify']
-            },
+            }
         }
     } );
     grunt.loadNpmTasks( 'grunt-contrib-uglify' );
