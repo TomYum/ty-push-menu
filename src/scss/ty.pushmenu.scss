@@ -51,8 +51,36 @@ $ty-pushmenu-wrapper-color: #555 !default;
     -o-transition: $property $duration $timeng $delay;        
 }
 
+@mixin horizontal{
+    left: 0px;
+    width: 100%;
+    min-width: 100%;
+}
+
+@mixin vertical{
+    top: 0px;
+    height: 100%;
+    min-height: 100%;
+}
 
 
+@each $position in $ty-pushmenu-positions  {
+
+    .ty-pm-#{$position}
+    { 
+        #{$position}: 0px;
+
+        @if ( $position == 'bottom'){
+            @include horizontal;
+        }
+        @if ( $position == 'top'){
+            @include horizontal;
+        }
+
+        @if ( $position == right) { @include vertical; }
+        @if ($position == left) { @include vertical;}
+    }
+}
 
 
 
@@ -69,12 +97,9 @@ $ty-pushmenu-wrapper-color: #555 !default;
 
 .ty-pushmenu-wrapper{
     background: $ty-pushmenu-wrapper-color;
-    padding: 0;
-    max-width: 33%;
+    padding: 0;    
     display: inline-block;
-    position: fixed;
-    left:0;
-    top: 0;        
+    position: fixed;          
     margin:0;
     padding: 1.6rem 2rem; 
     box-sizing: border-box;
@@ -109,18 +134,6 @@ $ty-pushmenu-wrapper-color: #555 !default;
 
 
 
-.ty-pm-left,
-.ty-pm-right{
-    height: 100%;
-    min-height: 100%;
-}
-
-.ty-pm-top,
-.ty-pm-bottom{
-    width: 100%;
-    min-width: 100%;
-}
-
 
 .ty-pushmenu-wrapper.animated{
     @include transition;
@@ -146,6 +159,7 @@ $ty-pushmenu-wrapper-color: #555 !default;
     opacity: 0; 
     @include transition( opacity ,500ms, ease-out, 300ms );
 }
+
 #ty-overlay.show{
     opacity: $ty-pushmenu-overlay-opacity;
     background: $ty-pushmenu-overlay-color;

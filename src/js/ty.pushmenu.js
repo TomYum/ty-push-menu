@@ -86,8 +86,14 @@
 
         var width = wrapper.outerWidth() * 1;
         var height = wrapper.outerHeight() * 1;
-        var displayX = $( window ).width() * 1;
-        var displayY = $( window ).height() * 1;
+
+//        var displayX = $( window ).width() * 1;
+//        var displayY = $( window ).height() * 1;
+        var displayX = $( document ).outerWidth() * 1;
+        var displayY = $( document ).outerHeight() * 1;
+
+        //alert( 'x:' + displayX );
+        //alert( 'y:' + displayY );
 
 
         this.height = height;
@@ -98,16 +104,16 @@
             this.expandedPosition.x = 0;
         }
         if ( this.config.position === 'right' ) {
-            this.colapsedPosition.x = displayX + width;
-            this.expandedPosition.x = displayX - width;
+            this.colapsedPosition.x = width;
+            this.expandedPosition.x = 0;
         }
         if ( this.config.position === 'top' ) {
             this.colapsedPosition.y = -height;
             this.expandedPosition.y = 0;
         }
         if ( this.config.position === 'bottom' ) {
-            this.colapsedPosition.y = displayY + height;
-            this.expandedPosition.y = displayY - height;
+            this.colapsedPosition.y = height;
+            this.expandedPosition.y = 0;
         }
 
 
