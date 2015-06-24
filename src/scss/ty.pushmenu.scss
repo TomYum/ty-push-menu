@@ -14,11 +14,11 @@ $ty-pushmenu-wrapper-padding-left: 5px;
 $ty-pushmenu-wrapper-padding-right: 5px;
 
 $ty-pushmenu-item-font-size: 1.25rem;
-$ty-pushmenu-item-color: #ffafaf;
+$ty-pushmenu-item-color: #fff;
 
-$ty-pushmenu-overlay-color: #222 !default; 
+$ty-pushmenu-overlay-color: #fafafa;//#222 !default; 
 $ty-pushmenu-overlay-opacity: 0.85 !default; 
-$ty-pushmenu-wrapper-color: #555 !default; 
+$ty-pushmenu-wrapper-color: #003456  !default; 
 
 
 
@@ -96,24 +96,28 @@ $ty-pushmenu-wrapper-color: #555 !default;
 }
 
 .ty-pushmenu-wrapper{
-    background: $ty-pushmenu-wrapper-color;
-    padding: 0;    
+    background: $ty-pushmenu-wrapper-color;    
     display: inline-block;
     position: fixed;          
     margin:0;
     padding: 1.6rem 2rem; 
     box-sizing: border-box;
     z-index: 31;
-    overflow-y: auto;
+    overflow-y: auto;    
+    //box-shadow: 0 0 1rem #222; 
 
     ul {
-        display: inline-block;
+        display: inline;
         width: 100%; 
-        max-width: 100%;
+        max-width: 100%;        
+        height: 100%;
+
+
         list-style: none;
-        background: #234567; 
+        //background: #234567; 
         margin: 0px;
         padding: 0px;
+
 
         li {
             font-size: $ty-pushmenu-item-font-size;
@@ -128,15 +132,46 @@ $ty-pushmenu-wrapper-color: #555 !default;
 
     }
 
-    li ul { display: none }
+    //li ul { display: none }
 
 }
 
 
 
 
+
+
+
 .ty-pushmenu-wrapper.animated{
     @include transition;
+}
+
+.ty-pushmenu-wrapper{
+    .inner-menu{
+        top: 0px;
+        bottom: 0px;        
+        left: 0px;
+        right: 0px;
+        position: absolute;
+
+        padding: 1.6rem 2rem;
+        box-sizing: border-box;
+        background: $ty-pushmenu-wrapper-color;
+
+        @include transition (all,300ms);
+        transform: translate(-100%,0);
+
+        .title{
+            margin-bottom: 1.5em;
+            display: inline-block;
+            text-transform: capitalize;
+
+        }
+
+    }    
+    .inner-menu.show{
+        transform: translate(0,0);
+    }
 }
 
 
@@ -155,17 +190,31 @@ $ty-pushmenu-wrapper-color: #555 !default;
 
     top: 0;
     left: 0;
-    display: none;
+    //display: none;
+    z-index: -1;
     opacity: 0; 
-    @include transition( opacity ,500ms, ease-out, 300ms );
+    @include transition( opacity ,800ms, linear, 0ms );
 }
 
 #ty-overlay.show{
     opacity: $ty-pushmenu-overlay-opacity;
     background: $ty-pushmenu-overlay-color;
-    display: block;
+    z-index: 29;
+    //display: block;
 }
+
+.ty-pm-left, .ty-pm-right {
+    min-width: 18.5rem;
+}
+
+.ty-pm-top, .ty-pm-bottom {
+
+}
+
 
 body{
     min-height: 100%;
 }
+
+
+

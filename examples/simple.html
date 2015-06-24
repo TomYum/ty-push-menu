@@ -76,7 +76,8 @@ and open the template in the editor.
                 <li><a href="#">production</a>
                     <ul>                                        
                         <li><a href="#">link 1</a></li>
-                        <li><a href="#">link 2</a></li>
+                        <li><a href="#">link 2</a>                        
+                        </li>
                         <li><a href="#">link 3</a></li>
                     </ul>
                 </li>
@@ -86,11 +87,32 @@ and open the template in the editor.
             <ul class="ty-pushmenu-left">
                 <li><a href="#">Home</a></li>
                 <li><a href="#">production</a>
-                    <ul>                                        
-                        <li><a href="#">link 1</a></li>
-                        <li><a href="#">link 2</a></li>
-                        <li><a href="#">link 3</a></li>
-                    </ul>
+                    <div class="inner-menu">
+                        <span class="title"></span>
+                        <ul>                                        
+                            <li><a href="#">link 1</a>
+                                <div class="inner-menu">
+                                    <span class="title"></span>
+                                    <ul>                                        
+                                        <li><a href="#">link 1</a></li>
+                                        <li><a href="#">link 2</a>
+                                            <div class="inner-menu">
+                                                <span class="title"></span>
+                                                <ul>                                        
+                                                    <li><a href="#">link 1</a></li>
+                                                    <li><a href="#">link 2</a></li>
+                                                    <li><a href="#">link 3</a></li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        <li><a href="#">link 3</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li><a href="#">link 2</a></li>
+                            <li><a href="#">link 3</a></li>
+                        </ul>
+                    </div>
                 </li>
                 <li><a href="#">link 1</a></li>
                 <li><a href="#">link 2</a></li>
@@ -130,8 +152,8 @@ and open the template in the editor.
     </body>
     <script>
         $( '.ty-pushmenu-left' ).tyPushMenu({menuTrigger : '.trigger-left', position: 'left'} );
-        $( '.ty-pushmenu-top' ).tyPushMenu({menuTrigger : '.trigger-top', position: 'top'} );
-        $( '.ty-pushmenu-right' ).tyPushMenu({menuTrigger : '.trigger-right', position: 'right'} );
-        $( '.ty-pushmenu-bottom' ).tyPushMenu({menuTrigger : '.trigger-bottom', position: 'bottom'} );
+            $( '.ty-pushmenu-top' ).tyPushMenu({menuTrigger : '.trigger-top', position: 'top'} );
+                $( '.ty-pushmenu-right' ).tyPushMenu({menuTrigger : '.trigger-right', position: 'right'} );
+                    $( '.ty-pushmenu-bottom' ).tyPushMenu({menuTrigger : '.trigger-bottom', position: 'bottom'} );
     </script>
 </html>

@@ -26,6 +26,8 @@
         this.width = 0;
         this.height = 0;
         this.pushElement;
+        this.activeSubmenu = {};
+        console.log( this );
     };
 
 
@@ -68,6 +70,8 @@
      * @returns {this}
      */
     tyPushMenu.prototype.init = function () {
+
+        var tyPM = this;
         this.config = $.extend( {}, this.defaults, this.options, this.metaData );
 
 
@@ -122,12 +126,23 @@
                     + this.colapsedPosition.y + 'px,'
                     + this.colapsedPosition.z + 'px)'} );
 
+        wrapper.find( '.inner-menu' ).css( {'transform': 'translate3d('
+                    + this.colapsedPosition.x + 'px,'
+                    + this.colapsedPosition.y + 'px,'
+                    + this.colapsedPosition.z + 'px)'} );
+
+
 
         //$( 'body' ).addClass( 'ty-pm-push-element' );
         this.registrTrigger();
         if ( this.config.overlay ) {
             this.initOverlay();
         }
+
+        this.$elem.find( 'li>a, li>span' ).click( function () {
+            tyPM.showInner( $( this ).parent() );
+        } );
+
         /**/
         return this;
     };
@@ -136,6 +151,46 @@
         if ( $elm )
             $elm.css( {'transform': 'translate3d(' + pos.x + 'px,' + pos.y + 'px,' + pos.z + 'px)'} );
     };
+
+    tyPushMenu.prototype.showInner = function ( $this ) {
+        var subMenu = $this.children( '.inner-menu' );
+        if ( subMenu.length ) {
+
+            this.createBackLink( subMenu );
+
+            var titleTag = this.getTitleTag( subMenu );
+            titleTag.html( $this.children( 'a,span' ).html() );
+
+            this.moveTo( subMenu, {x: 0, y: 0, z: 0} );
+        }
+    };
+
+    tyPushMenu.prototype.createBackLink = function ( $submenu ) {
+        var tyPM = this;
+        if ( !$submenu.children( '.back-link' ).length ) {
+            $( '<span>' ).addClass( 'back-link' ).html( '<<' )
+                    .prependTo( $submenu )
+                    .click( function () {
+                        tyPM.goBack( $submenu );
+                    } );
+        }
+
+    };
+
+    tyPushMenu.prototype.goBack = function ( element ) {
+        this.moveTo( $( element ), this.colapsedPosition );
+    };
+
+
+
+    tyPushMenu.prototype.getTitleTag = function ( $elm ) {
+        var titleTag = $elm.children( '.title' );
+        if ( !titleTag.length ) {
+            titleTag = $( '<span>' ).addClass( 'title' ).prependTo( $elm );
+        }
+        return titleTag;
+    };
+
 
     /**
      * show menu
@@ -196,6 +251,7 @@
     tyPushMenu.prototype.toggle = function () {
         return (this.isVisiable) ? this.hideMenu() : this.showMenu();
     };
+
 
 
     tyPushMenu.prototype.initOverlay = function () {
