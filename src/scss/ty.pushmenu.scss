@@ -122,7 +122,21 @@ $ty-pushmenu-wrapper-color: #003456  !default;
 
         li {
             font-size: $ty-pushmenu-item-font-size;
-            color: $ty-pushmenu-item-color;            
+            color: $ty-pushmenu-item-color;
+            color: #FFF;
+            padding: 0.2em 0.1em;
+            border-bottom: 0.05em solid rgba(255,255,255,0.3);
+
+            @include transition;
+
+            &:first-child{
+                border-top: 0.05em solid rgba(255,255,255,0.3);
+            }            
+
+            &:hover{
+                background: $ty-pushmenu-wrapper-color + 50;                
+            }
+
         }
 
         a {
