@@ -27,6 +27,7 @@
         this.height = 0;
         this.pushElement;
         this.activeSubmenu = {};
+        this.loaded = true;
 
     };
 
@@ -77,6 +78,7 @@
 
         //LazyLoad Spinner
         if ( this.config.lazyLoad ) {
+            this.loaded = false;
             this.$elem.append( $( '<span>' ).addClass( this.config.lazyLoad.spinnerClass ? this.config.lazyLoad.spinnerClass : 'ty-simple-spinner' ) );
         }
 
@@ -151,13 +153,17 @@
         if ( lazyLoad.requestData ) {
             ajaxRequest.data = lazyLoad.requestData;
         }
+
         ajaxRequest.success = function ( data ) {
             var content;
+
             if ( lazyLoad.dataType === 'json' ) {
+                content = data;
                 if ( lazyLoad.contentMap ) {
-                    for ( var key in lazyLoad.contentMap ) {
-                        if ( data[key] || data[key] === '' ) {
-                            content = data[key];
+                    for ( var i in lazyLoad.contentMap ) {
+                        var key = lazyLoad.contentMap[i];
+                        if ( content[ key ] || content[ key ] === '' ) {
+                            content = content[ key ];
                         } else {
                             return false;
                         }
@@ -168,6 +174,7 @@
             }
 
             tyPM.$elem.html( content );
+            tyPM.loaded = true;
 
         };
 
@@ -230,6 +237,11 @@
      * @returns {this}
      */
     tyPushMenu.prototype.showMenu = function () {
+
+        if ( !this.loaded && this.config.lazyLoad ) {
+            this.lazyLoad();
+        }
+
         var wrapper = this.$elem.parent( '.ty-pushmenu-wrapper' );
         wrapper.addClass( 'animated' );
         if ( !this.isVisiable ) {
