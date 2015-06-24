@@ -46,18 +46,9 @@ and open the template in the editor.
 
 
 
-            <ul class="ty-pushmenu-top">
-                <h2>right menu</h2>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">production</a>
-                    <ul>                                        
-                        <li><a href="#">link 1</a></li>
-                        <li><a href="#">link 2</a></li>
-                        <li><a href="#">link 3</a></li>
-                    </ul>
-                </li>
-
+            <ul class="ty-pushmenu-top">                
             </ul>
+
             <ul class="ty-pushmenu-bottom">
                 <h2>right menu</h2>
                 <li><a href="#">Home</a></li>
@@ -133,7 +124,7 @@ and open the template in the editor.
             <div class="trigger trigger-bottom">
                 |_|
             </div>
-            <div class="any-content">
+            <div class="any-content">                
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam convallis placerat dui, id accumsan magna sollicitudin id. Nunc mollis lorem non risus semper pulvinar. Curabitur scelerisque nec lorem id egestas. Nunc sit amet accumsan nibh, nec tincidunt ipsum. Interdum et malesuada fames ac ante ipsum primis in faucibus. Vivamus sit amet urna vehicula lorem auctor rutrum in a nulla. Duis id iaculis nibh, a euismod eros. Nam quam urna, fringilla et finibus nec, blandit scelerisque risus. Phasellus et dignissim lectus. Nam elementum enim vitae neque dapibus, et convallis massa tincidunt. Phasellus at tortor aliquet, iaculis nibh sit amet, cursus ex. <p>
             </div>
             <p>Sed non ligula semper, dignissim justo vitae, ornare risus. Quisque gravida leo pharetra porttitor rutrum. Quisque eu posuere sem. Etiam ac lorem dignissim, condimentum turpis eu, ornare ante. Nam consectetur orci a velit lacinia posuere. Proin convallis ipsum at dolor dapibus aliquam. Proin neque mauris, luctus eu turpis nec, elementum consectetur risus. Phasellus dignissim libero non augue eleifend placerat. Morbi sollicitudin ligula quis venenatis eleifend. Phasellus finibus venenatis magna, sit amet fermentum massa rhoncus eu. Cras vel mauris sollicitudin, volutpat urna ac, dignissim tellus. Duis eget eros velit. </p>
@@ -152,8 +143,18 @@ and open the template in the editor.
     </body>
     <script>
         $( '.ty-pushmenu-left' ).tyPushMenu({menuTrigger : '.trigger-left', position: 'left'} );
-            $( '.ty-pushmenu-top' ).tyPushMenu({menuTrigger : '.trigger-top', position: 'top'} );
-                $( '.ty-pushmenu-right' ).tyPushMenu({menuTrigger : '.trigger-right', position: 'right'} );
-                    $( '.ty-pushmenu-bottom' ).tyPushMenu({menuTrigger : '.trigger-bottom', position: 'bottom'} );
+        $( '.ty-pushmenu-top' ).tyPushMenu(
+                {
+                    menuTrigger: '.trigger-top',
+                    position: 'top',
+                    lazyLoad: {
+                        from: './lazyLoad.json',
+                        datatype: 'JSON',
+                        contentMap: ['menu', 'top', 'content']
+                    }
+                }
+        );
+        $( '.ty-pushmenu-right' ).tyPushMenu({menuTrigger : '.trigger-right', position: 'right'} );
+        $( '.ty-pushmenu-bottom' ).tyPushMenu({menuTrigger : '.trigger-bottom', position: 'bottom'} );
     </script>
 </html>

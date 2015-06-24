@@ -27,7 +27,7 @@
         this.height = 0;
         this.pushElement;
         this.activeSubmenu = {};
-        console.log( this );
+
     };
 
 
@@ -48,7 +48,8 @@
         animationEngine: 'css', // css or js
         position: 'left',
         pushElement: 'body',
-        overlay: true
+        overlay: true,
+        lazyLoad: false
     };
 
     tyPushMenu.prototype.initContentWrapper = function () {
@@ -74,6 +75,10 @@
         var tyPM = this;
         this.config = $.extend( {}, this.defaults, this.options, this.metaData );
 
+        //LazyLoad Spinner
+        if ( this.config.lazyLoad ) {
+            this.$elem.append( $( '<span>' ).addClass( this.config.lazyLoad.spinnerClass ? this.config.lazyLoad.spinnerClass : 'ty-simple-spinner' ) );
+        }
 
         if ( this.config.pushElement === 'body' )
             this.initContentWrapper();
@@ -86,66 +91,94 @@
 
         this.$elem.addClass( 'ty-pushmenu-container' );
 
-
-
-        var width = wrapper.outerWidth() * 1;
-        var height = wrapper.outerHeight() * 1;
-
-//        var displayX = $( window ).width() * 1;
-//        var displayY = $( window ).height() * 1;
-        var displayX = $( document ).outerWidth() * 1;
-        var displayY = $( document ).outerHeight() * 1;
-
-        //alert( 'x:' + displayX );
-        //alert( 'y:' + displayY );
-
-
-        this.height = height;
-        this.width = width;
+        this.height = wrapper.outerHeight() * 1;
+        this.width = wrapper.outerWidth() * 1;
 
         if ( this.config.position === 'left' ) {
-            this.colapsedPosition.x = -width;
+            this.colapsedPosition.x = -this.width;
             this.expandedPosition.x = 0;
         }
         if ( this.config.position === 'right' ) {
-            this.colapsedPosition.x = width;
+            this.colapsedPosition.x = this.width;
             this.expandedPosition.x = 0;
         }
         if ( this.config.position === 'top' ) {
-            this.colapsedPosition.y = -height;
+            this.colapsedPosition.y = -this.height;
             this.expandedPosition.y = 0;
         }
         if ( this.config.position === 'bottom' ) {
-            this.colapsedPosition.y = height;
+            this.colapsedPosition.y = this.height;
             this.expandedPosition.y = 0;
         }
 
-
-        wrapper.css( {'transform': 'translate3d('
-                    + this.colapsedPosition.x + 'px,'
-                    + this.colapsedPosition.y + 'px,'
-                    + this.colapsedPosition.z + 'px)'} );
-
-        wrapper.find( '.inner-menu' ).css( {'transform': 'translate3d('
-                    + this.colapsedPosition.x + 'px,'
-                    + this.colapsedPosition.y + 'px,'
-                    + this.colapsedPosition.z + 'px)'} );
+        this.moveTo( wrapper, this.colapsedPosition );
 
 
+        // move inner menu and bind action
+        var innerMenus = wrapper.find( '.inner-menu' );
+        if ( innerMenus.length ) {
+            this.moveTo( wrapper.find( '.inner-menu' ), this.colapsedPosition );
+            this.$elem.find( 'li>a, li>span' ).click( function ( e ) {
+                e.preventDefault();
+                tyPM.showInner( $( this ).parent() );
+                return  false;
+            } );
+        }
 
-        //$( 'body' ).addClass( 'ty-pm-push-element' );
+        // registr trigger
         this.registrTrigger();
+
+
+        // init overlay
         if ( this.config.overlay ) {
             this.initOverlay();
         }
 
-        this.$elem.find( 'li>a, li>span' ).click( function () {
-            tyPM.showInner( $( this ).parent() );
-        } );
 
         /**/
         return this;
     };
+
+    tyPushMenu.prototype.lazyLoad = function () {
+
+        var ajaxRequest = {};
+        var lazyLoad = this.config.lazyLoad;
+        var tyPM = this;
+
+        ajaxRequest.url = lazyLoad.url;
+        ajaxRequest.type = lazyLoad.method ? lazyLoad.method : 'POST';
+        ajaxRequest.dataType = lazyLoad.dataType ? lazyLoad.dataType : 'json';
+        if ( lazyLoad.requestData ) {
+            ajaxRequest.data = lazyLoad.requestData;
+        }
+        ajaxRequest.success = function ( data ) {
+            var content;
+            if ( lazyLoad.dataType === 'json' ) {
+                if ( lazyLoad.contentMap ) {
+                    for ( var key in lazyLoad.contentMap ) {
+                        if ( data[key] || data[key] === '' ) {
+                            content = data[key];
+                        } else {
+                            return false;
+                        }
+                    }
+                } else {
+                    content = data.content;
+                }
+            }
+
+            tyPM.$elem.html( content );
+
+        };
+
+
+        $.ajax( ajaxRequest );
+    };
+
+
+
+
+
 
     tyPushMenu.prototype.moveTo = function ( $elm, pos ) {
         if ( $elm )

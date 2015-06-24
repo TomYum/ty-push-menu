@@ -64,6 +64,7 @@ $ty-pushmenu-wrapper-color: #003456  !default;
 }
 
 
+
 @each $position in $ty-pushmenu-positions  {
 
     .ty-pm-#{$position}
@@ -210,6 +211,45 @@ $ty-pushmenu-wrapper-color: #003456  !default;
 .ty-pm-top, .ty-pm-bottom {
 
 }
+
+.ty-simple-spinner {
+    font-size: 0.8rem;
+    display: inline-block;
+    width: 2em;
+    height: 2em;
+    border-radius: 2em;
+    border: 0.325em solid #fff;
+    box-shadow: 0 0 0.325em #233223;
+    animation-name: rotation;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+
+    &:before{
+        content: "";
+        width: 1em;
+        height: 1em;
+        border-radius: 1em;
+        background: #fff;
+        position: absolute;
+        top: -0.5em;
+        left: 50%;        
+    }
+}
+
+@keyframes rotation {
+    0% {-webkit-transform:rotate(0deg);
+        -moz-transform:rotate(0deg);
+        -o-transform:rotate(0deg);
+        transform:rotate(0deg);}
+    100% {-webkit-transform:rotate(360deg);
+          -moz-transform:rotate(720deg);
+          -o-transform:rotate(360deg);
+          transform:rotate(360deg);}
+}
+
+
+
 
 
 body{
