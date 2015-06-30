@@ -195,7 +195,7 @@
             tyPM.$elem.html(content);
             tyPM._calcWrapper();
             tyPM.loaded = true;
-            tyPM.prototype._show();
+            tyPM._show();
         };
 
 
@@ -256,7 +256,7 @@
         if (!this.loaded && this.config.lazyLoad) {
             this.lazyLoad();
         } else {
-            tyPushMenu.prototype._show();
+            this._show();
         }
 
         return this;
