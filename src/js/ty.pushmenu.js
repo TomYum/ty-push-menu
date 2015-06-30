@@ -54,7 +54,8 @@
         position: 'left',
         pushElement: 'body',
         overlay: true,
-        lazyLoad: false
+        lazyLoad: false,
+        isActive: true
     };
 
     tyPushMenu.prototype.initContentWrapper = function () {
@@ -71,13 +72,26 @@
         this.pushElement = '.ty-pm-content-wrapper';
     };
 
+    tyPushMenu.prototype._removeClasses = function () {
+        this.$wrapper.removeClass();
+        this.$elem.removeClass('ty-pushmenu-container');
+    };
+    tyPushMenu.prototype._addClasses = function () {
+        this.$wrapper
+            .addClass('ty-pushmenu-wrapper')
+            .addClass('ty-pm-' + this.config.position);
+        this.$elem.addClass('ty-pushmenu-container');
+    };
+
     /**
      * init menu
      * @returns {this}
      */
     tyPushMenu.prototype.init = function () {
 
-        var tyPM = this;
+        var tyPM = this,
+            wrapper;
+
         this.config = $.extend({}, this.defaults, this.options, this.metaData);
 
         //LazyLoad Spinner
@@ -89,33 +103,33 @@
         if (this.config.pushElement === 'body')
             this.initContentWrapper();
 
-        var wrapper = $('<div>')
-            .addClass('ty-pushmenu-wrapper')
-            .addClass('ty-pm-' + this.config.position)
-            .appendTo($('body'))
+
+        this.$wrapper = wrapper = $('<div>')
+            .appendTo(this.$elem.parent())
             .append(this.$elem);
+        /**/
 
-        this.$elem.addClass('ty-pushmenu-container');
-
-        this._calcWrapper(wrapper);
-
-        this.moveTo(wrapper, this.colapsedPosition);
-
+        if (this.isActive) {
+            this._addClasses();
+            this._calcWrapper();
+            this.moveTo(wrapper, this.colapsedPosition);
+        }
 
         // move inner menu and bind action
         var innerMenus = wrapper.find('.inner-menu');
         if (innerMenus.length) {
             this.moveTo(wrapper.find('.inner-menu'), this.colapsedPosition);
             this.$elem.find('li>a, li>span').click(function (e) {
-                e.preventDefault();
-                tyPM.showInner($(this).parent());
-                return false;
+                if (tyPM.isActive) {
+                    e.preventDefault();
+                    tyPM.showInner($(this).parent());
+                    return false;
+                }
             });
         }
 
         // registr trigger
         this.registrTrigger();
-
 
         // init overlay
         if (this.config.overlay) {
@@ -124,15 +138,19 @@
 
 
         /**/
+        //console.log('tyPM');
+        //console.log(this);
+
         return this;
     };
 
 
-    tyPushMenu.prototype._calcWrapper = function (wrapper) {
+    tyPushMenu.prototype._calcWrapper = function () {
 
-        if (!wrapper || (wrapper instanceof Object )) {
-            wrapper = this.$elem.parent('.ty-pushmenu-wrapper');
-        }
+
+        var wrapper = this.$wrapper;
+
+        console.log(wrapper);
 
         this.height = wrapper.outerHeight() * 1;
         this.width = wrapper.outerWidth() * 1;
@@ -258,12 +276,11 @@
         } else {
             this._show();
         }
-
         return this;
     };
 
     tyPushMenu.prototype._show = function () {
-        var wrapper = this.$elem.parent('.ty-pushmenu-wrapper');
+        var wrapper = this.$wrapper;
         wrapper.addClass('animated');
         if (!this.isVisiable) {
 
@@ -289,7 +306,7 @@
             this.moveTo(pushedElm, pElmPosition);
 
             this.$elem.show();
-            this.moveTo(wrapper, this.expandedPosition);
+            //this.moveTo(wrapper, this.expandedPosition);
 
             this.showOverlay();
             this.expandedMenus.push(this);
@@ -355,6 +372,17 @@
         });
     };
 
+    tyPushMenu.prototype.disable = function () {
+        this.isActive = false;
+        this._removeClasses();
+    };
+    tyPushMenu.prototype.enable = function () {
+        this.isActive = true;
+        this._addClasses();
+        this._calcWrapper(this.$wrapper);
+        this.moveTo(this.$wrapper, this.colapsedPosition);
+    };
+
 
     /**
      * Registr jQuery Plugin
@@ -362,10 +390,13 @@
      * @returns {ty.pushmenu_L15.$.fn@call;each}
      */
     $.fn.tyPushMenu = function (options) {
-        return this.each(function () {
-            new tyPushMenu(this, options).init();
-        });
 
+        return new tyPushMenu(this, options).init();
+        /*
+         return this.each(function () {
+         new tyPushMenu(this, options).init();
+         });
+         /**/
     };
 
 
