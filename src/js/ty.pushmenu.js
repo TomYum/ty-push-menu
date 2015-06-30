@@ -195,7 +195,7 @@
             tyPM.$elem.html(content);
             tyPM._calcWrapper();
             tyPM.loaded = true;
-
+            tyPM.prototype._show();
         };
 
 
@@ -255,8 +255,14 @@
 
         if (!this.loaded && this.config.lazyLoad) {
             this.lazyLoad();
+        } else {
+            tyPushMenu.prototype._show();
         }
 
+        return this;
+    };
+
+    tyPushMenu.prototype._show = function () {
         var wrapper = this.$elem.parent('.ty-pushmenu-wrapper');
         wrapper.addClass('animated');
         if (!this.isVisiable) {
@@ -289,9 +295,8 @@
             this.expandedMenus.push(this);
             //alert( this.expandedMenus.length );
         }
-
-        return this;
-    };
+        return this.isVisiable;
+    }
 
     tyPushMenu.prototype.hideMenu = function () {
         if (this.isVisiable) {
