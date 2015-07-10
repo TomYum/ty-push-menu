@@ -131,14 +131,12 @@ $ty-pushmenu-wrapper-color: #003456 !default;
   }
 }
 
-
 .ty-menu {
   position: fixed;
   background: $ty-pushmenu-wrapper-color;
   min-width: 20%;
   color: #fff;
-
-
+  z-index: 30;
 
   .ty-menu-page, .inner-menu {
     display: none;
