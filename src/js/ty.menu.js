@@ -27,6 +27,8 @@
 
     tyMenu.prototype.__menuInstances = [];
     tyMenu.prototype.__expandedMenus = {};
+    tyMenu.prototype.__pages = {};
+    tyMenu.prototype.__activePages = [];
     tyMenu.prototype.defaults = {
         menuTrigger: '.ty-menu-trigger',
         animationEngine: 'css', // css or js
@@ -64,7 +66,7 @@
         }
 
         console.log(this.positions);
-    }
+    };
 
     tyMenu.prototype._createContentWrapper = function () {
         var wrapper;
@@ -78,7 +80,7 @@
         }
 
         this.$wrapper = wrapper;
-    }
+    };
 
     tyMenu.prototype._lazyLoad = function () {
 
@@ -113,8 +115,11 @@
             }
 
             tyPM.$elem.html(content);
+            tyPM._setPositions();
+            tyPM._setPageTrigger();
             tyPM.loaded = true;
-            tyPM._calculatePositions();
+
+
             tyPM.show();
         };
 
@@ -122,8 +127,33 @@
         $.ajax(ajaxRequest);
 
 
-    }
+    };
 
+    tyMenu.prototype._setPositions = function () {
+        this._calculatePositions();
+        this._setPagePosition();
+        this.$elem.velocity({translateX: this.positions.x, translateY: this.positions.y}, 0);
+    };
+    tyMenu.prototype._initOverlay = function () {
+        var overlay = $('#ty-overlay');
+        var tyM = this;
+        if (!overlay.length) {
+            overlay = $('<div>')
+                .attr('id', 'ty-overlay')
+                .click(function () {
+                    tyM.hideAll();
+                })
+                .appendTo($('body'));
+        }
+        this.$overlay = overlay;
+    };
+
+    tyMenu.prototype._setPagePosition = function () {
+        this.$elem.find('.ty-menu-page, .inner-menu').velocity({
+            translateX: this.positions.x,
+            translateY: this.positions.y
+        }, 0);
+    };
 
     tyMenu.prototype._show = function () {
         this.$elem.show().velocity({translateX: 0, translateY: 0}, this.config.animation.show);
@@ -135,7 +165,7 @@
         this.__expandedMenus[this.id] = true;
 
         this.isVisiable = true;
-    }
+    };
 
     tyMenu.prototype.show = function () {
 
@@ -145,7 +175,7 @@
             this._show();
         }
         return this;
-    }
+    };
 
     tyMenu.prototype.hide = function () {
 
@@ -167,39 +197,85 @@
         this.$body.css('overflow', 'auto');
         this.isVisiable = false;
         this.$overlay.velocity({opacity: 0}, {
-            duration: this.config.animation.hide.duration,
-            delay: this.config.animation.hide.delay,
-            complete: function () {
-                $(this).hide();
+                duration: this.config.animation.hide.duration,
+                delay: this.config.animation.hide.delay,
+                complete: function () {
+                    $(this).hide();
+                }
             }
-        })
+        )
 
         delete this.__expandedMenus[this.id];
         return this;
-    }
+    };
 
     tyMenu.prototype.hideAll = function () {
-        console.log(this);
         var index, menu;
         for (index in  this.__expandedMenus) {
             if (menu = this.__menuInstances[index]) menu.hide();
         }
     };
 
-
-    tyMenu.prototype._initOverlay = function () {
-        var overlay = $('#ty-overlay');
+    tyMenu.prototype._setPageTrigger = function () {
         var tyM = this;
-        if (!overlay.length) {
-            overlay = $('<div>')
-                .attr('id', 'ty-overlay')
-                .click(function () {
-                    tyM.hideAll();
-                })
-                .appendTo($('body'));
-        }
-        this.$overlay = overlay;
+        tyM.$elem.find('[data-show-page]').click(function () {
+            console.log('triggered');
+            pageId = $(this).data('show-page');
+            tyM.showPage(pageId);
+        });
     };
+
+
+    tyMenu.prototype.__showPage = function ($page) {
+        if ($page) {
+            $page.show().velocity(
+                {
+                    opacity: 1,
+                    translateX: 0,
+                    translateY: 0
+                },
+                this.config.animation.show
+            );
+        }
+    }
+
+    tyMenu.prototype.showPage = function (pageId) {
+        var $page;
+        if ($page = this.getPage(pageId)) {
+            this.__activePages.push(pageId);
+            this.__showPage($page);
+        }
+    };
+
+    tyMenu.prototype.hidePage = function () {
+        if (this.__activePages.length) {
+            $page = this.__activePages.pop();
+            this.__hidePage($page);
+        }
+    };
+
+    tyMenu.prototype.__hidePage = function ($page) {
+        if ($page) {
+            $page.show().velocity(
+                {
+                    opacity: 1,
+                    translateX: this.positions.x,
+                    translateY: this.positions.y
+                },
+                this.config.animation.show
+            );
+        }
+    };
+
+    tyMenu.prototype.getPage = function (pageId) {
+        var $page;
+        if (!(($page = this.__pages[pageId]) && $page.length)) {
+            $page = this.$elem.find('#' + pageId);
+            this.__pages[pageId] = $page;
+        }
+        return $page.length ? $page : null;
+    };
+
 
     tyMenu.prototype.init = function () {
 
@@ -219,15 +295,19 @@
         this.$elem.addClass('ty-menu ty-menu-' + this.config.position);
 
         this._initOverlay();
-        this._calculatePositions();
         this._createContentWrapper();
         this.registrTrigger();
+
+        this._setPositions();
+        this._setPageTrigger();
+        //this._calculatePositions();
+        //this._setPagePosition();
 
         this.$elem.velocity({translateX: this.positions.x, translateY: this.positions.y}, 0);
         this.$elem.appendTo($('body'));
 
         return tym;
-    }
+    };
 
 
     /**
@@ -247,7 +327,7 @@
 
     tyMenu.prototype.toggle = function () {
         ( this.isVisiable ) ? this.hide() : this.show();
-    }
+    };
 
 
     /**
