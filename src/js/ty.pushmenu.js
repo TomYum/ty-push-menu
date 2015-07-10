@@ -320,7 +320,12 @@
 
 
         $(window).resize(function () {
-            tym._calculatePositions();
+
+            if (!tym.isVisiable) {
+                tym._setPositions();
+            } else {
+                tym._calculatePositions();
+            }
         });
 
         return tym;
