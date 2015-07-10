@@ -67,7 +67,7 @@
             this.positions.y = height + 10;
         }
 
-        console.log(this.positions);
+        //console.log(this.positions);
     };
 
     tyPushMenu.prototype._createContentWrapper = function () {
@@ -317,6 +317,11 @@
 
         this.$menuWrapper.velocity({translateX: this.positions.x, translateY: this.positions.y}, 0);
         //this.$menuWrapper.appendTo($('body'));
+
+
+        $(window).resize(function () {
+            tym._calculatePositions();
+        });
 
         return tym;
     };
