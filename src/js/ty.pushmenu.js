@@ -1,5 +1,5 @@
 /**
- * jquery.tyPushMenu v 0.0.1
+ * jquery.tyPushMenu v 0.2
  *
  * Licensed under the MIT license.
  * http://www.opensource.org/licenses/mit-license.php
@@ -12,8 +12,7 @@
 
 /**
  *
- * @todo JS animation. use animate or setinterval?
- * @todo IE9 support. Change transition to js animation. Change traslate3d to translate2d.
+ * @todo JS animation. velocity!
  *
  */
 ;
@@ -62,13 +61,19 @@
         /**
          * @todo может по-другому?
          */
+
+
+        /***/
         if (!$('.ty-pm-content-wrapper').length) {
-            var contenWrapper = $('<div>')
+
+            //var contenWrapper = $('<div>')
+            $('body')
                 .addClass('ty-pm-content-wrapper')
                 .addClass('ty-pm-push-element');
-            $(this.config.pushElement).children().appendTo(contenWrapper);
-            contenWrapper.appendTo($('body'));
+            //$(this.config.pushElement).children().appendTo(contenWrapper);
+            //contenWrapper.appendTo($('body'));
         }
+        /**/
         this.pushElement = '.ty-pm-content-wrapper';
     };
 
@@ -100,16 +105,20 @@
             this.$elem.append($('<span>').addClass(this.config.lazyLoad.spinnerClass ? this.config.lazyLoad.spinnerClass : 'ty-simple-spinner'));
         }
 
-        if (this.config.pushElement === 'body')
-            this.initContentWrapper();
+        /**
+         if (this.config.pushElement === 'body')
+         this.initContentWrapper();
+         /***/
+        this.initContentWrapper();
 
+        //this.pushElement = $('body');
 
         this.$wrapper = wrapper = $('<div>')
             .appendTo(this.$elem.parent())
             .append(this.$elem);
         /**/
 
-        if (this.isActive) {
+        if (this.config.isActive) {
             this._addClasses();
             this._calcWrapper();
             this.moveTo(wrapper, this.colapsedPosition);
@@ -135,7 +144,6 @@
         if (this.config.overlay) {
             this.initOverlay();
         }
-
 
         /**/
         //console.log('tyPM');
@@ -212,6 +220,7 @@
 
             tyPM.$elem.html(content);
             tyPM._calcWrapper();
+            tyPM.moveTo(tyPM.$wrapper, tyPM.colapsedPosition);
             tyPM.loaded = true;
             tyPM._show();
         };
@@ -281,12 +290,16 @@
 
     tyPushMenu.prototype._show = function () {
         var wrapper = this.$wrapper;
+        var pushedElm = $(this.pushElement);
         wrapper.addClass('animated');
+        pushedElm.addClass('animated');
+
+        //console.log(pushedElm);
+
         if (!this.isVisiable) {
 
-            this.isVisiable = true;
 
-            var pushedElm = $(this.pushElement);
+            this.isVisiable = true;
 
             var pElmPosition = Object.create(this.colapsedPosition);
             if (this.config.position === 'left') {
@@ -306,6 +319,7 @@
             this.moveTo(pushedElm, pElmPosition);
 
             this.$elem.show();
+            this.$wrapper.show();
             //this.moveTo(wrapper, this.expandedPosition);
 
             this.showOverlay();
@@ -322,7 +336,9 @@
             var pElmPosition = this.colapsedPosition;
 
             this.moveTo(pushedElm, {x: 0, y: 0, z: 0});
-            this.moveTo(this.$elem.parent('.ty-pushmenu-wrapper'), pElmPosition);
+            this.moveTo(this.$wrapper, pElmPosition);
+            //this.$elem.hide(600);
+            this.$wrapper.hide(600);
             this.hideOverlay();
         }
         return this;
@@ -375,6 +391,8 @@
     tyPushMenu.prototype.disable = function () {
         this.isActive = false;
         this._removeClasses();
+        this.$elem.show();
+        this.moveTo(this.$wrapper, {x: 0, y: 0, z: 0});
     };
     tyPushMenu.prototype.enable = function () {
         this.isActive = true;

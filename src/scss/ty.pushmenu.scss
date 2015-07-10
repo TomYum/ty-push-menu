@@ -5,8 +5,7 @@
  *  Issues https://github.com/TomYum/ty-push-menu/issues
  */
 
-
-$ty-pushmenu-positions : top left bottom right;
+$ty-pushmenu-positions: top left bottom right;
 
 $ty-pushmenu-wrapper-padding-top: 10px;
 $ty-pushmenu-wrapper-padding-bottom: 10px;
@@ -16,210 +15,196 @@ $ty-pushmenu-wrapper-padding-right: 5px;
 $ty-pushmenu-item-font-size: 1.25rem;
 $ty-pushmenu-item-color: #fff;
 
-$ty-pushmenu-overlay-color: #fafafa;//#222 !default; 
-$ty-pushmenu-overlay-opacity: 0.85 !default; 
-$ty-pushmenu-wrapper-color: #003456  !default; 
+$ty-pushmenu-overlay-color: #fafafa;
+//#222 !default;
+$ty-pushmenu-overlay-opacity: 0.85 !default;
+$ty-pushmenu-wrapper-color: #003456 !default;
 
-
-
-
-@mixin translate3d ( $x : 0px , $y: 0px ){
-    $z: 0px;
-    transform: translate3d($x,$y,$z);
-    -moz-transform: translate3d($x,$y,$z);
-    -webkit-transform: translate3d($x,$y,$z);
-    -ms-transform: translate3d($x,$y,$z);  
+@mixin translate3d($x: 0px, $y: 0px) {
+  $z: 0px;
+  transform: translate3d($x, $y, $z);
+  -moz-transform: translate3d($x, $y, $z);
+  -webkit-transform: translate3d($x, $y, $z);
+  -ms-transform: translate3d($x, $y, $z);
 }
 
-@mixin translate2d ( $x : 0px , $y: 0px ){    
-    transform: translateX($x);
-    transform: translateY($y);
-    -moz-transform: translateX($x);
-    -moz-transform: translateY($y);
-    -webkit-transform: translateX($x);
-    -webkit-transform: translateY($y);
-    -ms-transform: translateX($x);
-    -ms-transform: translateY($y);    
+@mixin translate2d($x: 0px, $y: 0px) {
+  transform: translateX($x);
+  transform: translateY($y);
+  -moz-transform: translateX($x);
+  -moz-transform: translateY($y);
+  -webkit-transform: translateX($x);
+  -webkit-transform: translateY($y);
+  -ms-transform: translateX($x);
+  -ms-transform: translateY($y);
 }
 
-
-
-@mixin transition( $property: all, $duration: 500ms, $timeng: ease-out, $delay: 0s ){
-    transition: $property $duration $timeng $delay;
-    -moz-transition: $property $duration $timeng $delay;
-    -webkit-transition: $property $duration $timeng $delay;        
-    -o-transition: $property $duration $timeng $delay;        
+@mixin transition($property: all, $duration: 500ms, $timeng: ease-out, $delay: 0s) {
+  transition: $property $duration $timeng $delay;
+  -moz-transition: $property $duration $timeng $delay;
+  -webkit-transition: $property $duration $timeng $delay;
+  -o-transition: $property $duration $timeng $delay;
 }
 
-@mixin horizontal{
-    left: 0px;
+@mixin horizontal {
+  left: 0px;
+  width: 100%;
+  min-width: 100%;
+}
+
+@mixin vertical {
+  top: 0px;
+  height: 100%;
+  min-height: 100%;
+}
+
+@each $position in $ty-pushmenu-positions {
+
+  .ty-pm-#{$position} {
+    #{$position}: 0px;
+
+    @if ($position == 'bottom') {
+      @include horizontal;
+    }
+    @if ($position == 'top') {
+      @include horizontal;
+    }
+
+    @if ($position == right) {
+      @include vertical;
+    }
+    @if ($position == left) {
+      @include vertical;
+    }
+  }
+}
+
+.ty-pm-push-element {
+
+  @include transition;
+  @include translate3d();
+}
+
+.ty-pm-content-wrapper {
+  margin: 0;
+  padding: 0;
+}
+
+.ty-pushmenu-wrapper {
+  background: $ty-pushmenu-wrapper-color;
+  display: inline-block;
+  position: fixed;
+  margin: 0;
+  padding: 1.6rem 2rem;
+  box-sizing: border-box;
+  z-index: 31;
+  overflow-y: auto;
+  //box-shadow: 0 0 1rem #222;
+
+  ul {
+    display: inline;
     width: 100%;
-    min-width: 100%;
-}
-
-@mixin vertical{
-    top: 0px;
+    max-width: 100%;
     height: 100%;
-    min-height: 100%;
-}
 
+    list-style: none;
+    //background: #234567;
+    margin: 0px;
+    padding: 0px;
 
+    li {
+      font-size: $ty-pushmenu-item-font-size;
+      color: $ty-pushmenu-item-color;
+      color: #FFF;
+      padding: 0.2em 0.1em;
+      border-bottom: 0.05em solid rgba(255, 255, 255, 0.3);
 
-@each $position in $ty-pushmenu-positions  {
+      @include transition;
 
-    .ty-pm-#{$position}
-    { 
-        #{$position}: 0px;
+      &:first-child {
+        border-top: 0.05em solid rgba(255, 255, 255, 0.3);
+      }
 
-        @if ( $position == 'bottom'){
-            @include horizontal;
-        }
-        @if ( $position == 'top'){
-            @include horizontal;
-        }
+      &:hover {
+        background: $ty-pushmenu-wrapper-color + 50;
+      }
 
-        @if ( $position == right) { @include vertical; }
-        @if ($position == left) { @include vertical;}
     }
+
+    a {
+      font-size: inherit;
+      color: inherit;
+      text-decoration: none;
+    }
+
+  }
+
+  //li ul { display: none }
+
 }
 
-
-
-.ty-pm-push-element{
-
-    @include transition;
-    @include translate3d();
+.ty-pushmenu-wrapper.animated {
+  @include transition;
 }
 
-.ty-pm-content-wrapper{
-    margin: 0;
-    padding: 0;
-}
+.ty-pushmenu-wrapper {
+  .inner-menu {
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    position: absolute;
 
-.ty-pushmenu-wrapper{
-    background: $ty-pushmenu-wrapper-color;    
-    display: inline-block;
-    position: fixed;          
-    margin:0;
-    padding: 1.6rem 2rem; 
+    padding: 1.6rem 2rem;
     box-sizing: border-box;
-    z-index: 31;
-    overflow-y: auto;    
-    //box-shadow: 0 0 1rem #222; 
+    background: $ty-pushmenu-wrapper-color;
 
-    ul {
-        display: inline;
-        width: 100%; 
-        max-width: 100%;        
-        height: 100%;
+    @include transition(all, 300ms);
+    transform: translate(-100%, 0);
 
-
-        list-style: none;
-        //background: #234567; 
-        margin: 0px;
-        padding: 0px;
-
-
-        li {
-            font-size: $ty-pushmenu-item-font-size;
-            color: $ty-pushmenu-item-color;
-            color: #FFF;
-            padding: 0.2em 0.1em;
-            border-bottom: 0.05em solid rgba(255,255,255,0.3);
-
-            @include transition;
-
-            &:first-child{
-                border-top: 0.05em solid rgba(255,255,255,0.3);
-            }            
-
-            &:hover{
-                background: $ty-pushmenu-wrapper-color + 50;                
-            }
-
-        }
-
-        a {
-            font-size: inherit;
-            color: inherit;
-            text-decoration: none;
-        }
+    .title {
+      margin-bottom: 1.5em;
+      display: inline-block;
+      text-transform: capitalize;
 
     }
 
-    //li ul { display: none }
-
+  }
+  .inner-menu.show {
+    transform: translate(0, 0);
+  }
 }
-
-
-
-
-
-
-
-.ty-pushmenu-wrapper.animated{
-    @include transition;
-}
-
-.ty-pushmenu-wrapper{
-    .inner-menu{
-        top: 0px;
-        bottom: 0px;        
-        left: 0px;
-        right: 0px;
-        position: absolute;
-
-        padding: 1.6rem 2rem;
-        box-sizing: border-box;
-        background: $ty-pushmenu-wrapper-color;
-
-        @include transition (all,300ms);
-        transform: translate(-100%,0);
-
-        .title{
-            margin-bottom: 1.5em;
-            display: inline-block;
-            text-transform: capitalize;
-
-        }
-
-    }    
-    .inner-menu.show{
-        transform: translate(0,0);
-    }
-}
-
 
 .ty-pushmenu-icon {
-    display: inline-block;     
+  display: inline-block;
 }
 
-#ty-overlay{
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    min-height: 100%;
-    min-width: 100%;
-    background: $ty-pushmenu-overlay-color;
-    z-index:30;
+#ty-overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  min-width: 100%;
+  background: $ty-pushmenu-overlay-color;
+  z-index: 30;
 
-    top: 0;
-    left: 0;
-    //display: none;
-    z-index: -1;
-    opacity: 0; 
-    @include transition( opacity ,800ms, linear, 0ms );
+  top: 0;
+  left: 0;
+  display: none;
+  //z-index: -1;
+  opacity: 0;
+  //@include transition(opacity, 800ms, linear, 0ms);
 }
 
-#ty-overlay.show{
-    opacity: $ty-pushmenu-overlay-opacity;
-    background: $ty-pushmenu-overlay-color;
-    z-index: 29;
-    //display: block;
+#ty-overlay.show {
+  opacity: $ty-pushmenu-overlay-opacity;
+  background: $ty-pushmenu-overlay-color;
+  z-index: 29;
+  //display: block;
 }
 
 .ty-pm-left, .ty-pm-right {
-    min-width: 18.5rem;
+  min-width: 18.5rem;
 }
 
 .ty-pm-top, .ty-pm-bottom {
@@ -227,48 +212,93 @@ $ty-pushmenu-wrapper-color: #003456  !default;
 }
 
 .ty-simple-spinner {
-    font-size: 0.8rem;
-    display: inline-block;
-    width: 2em;
-    height: 2em;
-    border-radius: 2em;
-    border: 0.325em solid #fff;
-    box-shadow: 0 0 0.325em #233223;
-    animation-name: rotation;
-    animation-duration: 2s;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
+  font-size: 0.8rem;
+  display: inline-block;
+  width: 2em;
+  height: 2em;
+  border-radius: 2em;
+  border: 0.325em solid #fff;
+  box-shadow: 0 0 0.325em #233223;
+  animation-name: rotation;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
 
-    &:before{
-        content: "";
-        width: 1em;
-        height: 1em;
-        border-radius: 1em;
-        background: #fff;
-        position: absolute;
-        top: -0.5em;
-        left: 50%;        
-    }
+  &:before {
+    content: "";
+    width: 1em;
+    height: 1em;
+    border-radius: 1em;
+    background: #fff;
+    position: absolute;
+    top: -0.5em;
+    left: 50%;
+  }
 }
 
 @keyframes rotation {
-    0% {-webkit-transform:rotate(0deg);
-        -moz-transform:rotate(0deg);
-        -o-transform:rotate(0deg);
-        transform:rotate(0deg);}
-    100% {-webkit-transform:rotate(360deg);
-          -moz-transform:rotate(720deg);
-          -o-transform:rotate(360deg);
-          transform:rotate(360deg);}
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(720deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 
+/* NEW */
 
+.ty-menu {
+  position: fixed;
 
+  background: #2aabd2;
+}
 
+.ty-menu-left {
+  left: 0;
+  top: 0;
+  bottom: 0;
+}
 
+.ty-menu-right {
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.ty-menu-top {
+  right: 0;
+  left: 0;
+  top: 0;
+}
+
+.ty-menu-bottom {
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.ty-menu-bottom, .ty-menu-top {
+  max-height: 90%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.ty-menu-left, .ty-menu-right {
+  max-width: 90%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/*
 body{
     min-height: 100%;
 }
-
+/**/
 
 

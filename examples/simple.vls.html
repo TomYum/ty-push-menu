@@ -11,7 +11,8 @@ and open the template in the editor.
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../dist/css/ty.pushmenu.css"/>
     <script src="../bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="../src/js/ty.pushmenu.js"></script>
+    <script src="../bower_components/velocity/velocity.js"></script>
+    <script src="../src/js/ty.menu.js"></script>
 
     <style>
         body {
@@ -196,8 +197,9 @@ and open the template in the editor.
 
 </body>
 <script>
-    $('.ty-pushmenu-left').tyPushMenu({menuTrigger: '.trigger-left', position: 'left'});
-    $('.ty-pushmenu-top').tyPushMenu(
+    $('.ty-pushmenu-left').tyMenu({menuTrigger: '.trigger-left', position: 'left'});
+    /**/
+    $('.ty-pushmenu-top').tyMenu(
             {
                 menuTrigger: '.trigger-top',
                 position: 'top',
@@ -208,7 +210,8 @@ and open the template in the editor.
                 }
             }
     );
-    $('.ty-pushmenu-right').tyPushMenu({menuTrigger: '.trigger-right', position: 'right'});
-    $('.ty-pushmenu-bottom').tyPushMenu({menuTrigger: '.trigger-bottom', position: 'bottom'});
+    $('.ty-pushmenu-right').tyMenu({menuTrigger: '.trigger-right', position: 'right'});
+    $('.ty-pushmenu-bottom').tyMenu({menuTrigger: '.trigger-bottom', position: 'bottom'});
+    /**/
 </script>
 </html>
