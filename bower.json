@@ -1,26 +1,26 @@
 {
-    "name": "ty-push-menu",
-    "version": "0.0.1",
-    "homepage": "https://github.com/TomYum/ty-push-menu",
-    "authors": [
-        "Tom.Yum. <hart2005@gmail.com>"
-    ],
-    "description": "Simple push menu",
-    "keywords": [
-        "ui",
-        "menu",
-        "js",
-        "push-menu"
-    ],
-    "dependencies": {
-        "jquery": ">= 2.0.0"
-    },
-    "license": "MIT",
-    "ignore": [
-        "**/.*",
-        "node_modules",
-        "bower_components",
-        "test",
-        "tests"
-    ]
+  "name": "ty-push-menu",
+  "version": "0.2.0",
+  "homepage": "https://github.com/TomYum/ty-push-menu",
+  "authors": [
+    "Tom.Yum. <hart2005@gmail.com>"
+  ],
+  "description": "Simple push menu",
+  "keywords": [
+    "ui",
+    "menu",
+    "js",
+    "push-menu"
+  ],
+  "dependencies": {
+    "jquery": ">= 2.0.0"
+  },
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
 }

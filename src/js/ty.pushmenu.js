@@ -1,5 +1,5 @@
 /**
- * jquery.tyPushMenu v 0.2
+ * jquery.tyPushMenu v 0.2.0
  *
  * Licensed under the MIT license.
  * http://www.opensource.org/licenses/mit-license.php
@@ -10,191 +10,87 @@
  * Issues https://github.com/TomYum/ty-push-menu/issues
  **/
 
-/**
- *
- * @todo JS animation. velocity!
- *
- */
 ;
 (function ($, window, document, undefined) {
 
-    var tyPushMenu = function (elem, options) {
+    tyPushMenu = function (elem, options) {
         this.elem = elem;
         this.$elem = $(elem);
-        this.parent = $(elem).parent();
         this.options = options;
         this.metaData = this.$elem.data('tyPushMenu');
-        this.isVisiable = false;
-        this.colapsedPosition = {x: 0, y: 0, z: 0};
-        this.expandedPosition = {x: 0, y: 0, z: 0};
-        this.width = 0;
-        this.height = 0;
-        this.pushElement;
-        this.activeSubmenu = {};
-        this.loaded = true;
-    };
+        this.$body = $('body');
 
-
-    tyPushMenu.prototype.expandedMenus = [];
-
-    tyPushMenu.prototype.hideAll = function () {
-
-        for (var i = 0; i < tyPushMenu.prototype.expandedMenus.length; i++) {
-            tyPushMenu.prototype.expandedMenus[i].hideMenu();
-        }
-    };
-
-    /**
-     * Default settings
-     */
-    tyPushMenu.prototype.defaults = {
-        menuTrigger: '.ty-pushmenu-trigger',
-        animationEngine: 'css', // css or js
-        position: 'left',
-        pushElement: 'body',
-        overlay: true,
-        lazyLoad: false,
-        isActive: true
-    };
-
-    tyPushMenu.prototype.initContentWrapper = function () {
-        /**
-         * @todo может по-другому?
-         */
-
-
-        /***/
-        if (!$('.ty-pm-content-wrapper').length) {
-
-            //var contenWrapper = $('<div>')
-            $('body')
-                .addClass('ty-pm-content-wrapper')
-                .addClass('ty-pm-push-element');
-            //$(this.config.pushElement).children().appendTo(contenWrapper);
-            //contenWrapper.appendTo($('body'));
-        }
-        /**/
-        this.pushElement = '.ty-pm-content-wrapper';
-    };
-
-    tyPushMenu.prototype._removeClasses = function () {
-        this.$wrapper.removeClass();
-        this.$elem.removeClass('ty-pushmenu-container');
-    };
-    tyPushMenu.prototype._addClasses = function () {
-        this.$wrapper
-            .addClass('ty-pushmenu-wrapper')
-            .addClass('ty-pm-' + this.config.position);
-        this.$elem.addClass('ty-pushmenu-container');
-    };
-
-    /**
-     * init menu
-     * @returns {this}
-     */
-    tyPushMenu.prototype.init = function () {
-
-        var tyPM = this,
-            wrapper;
-
-        this.config = $.extend({}, this.defaults, this.options, this.metaData);
-
-        //LazyLoad Spinner
-        if (this.config.lazyLoad) {
-            this.loaded = false;
-            this.$elem.append($('<span>').addClass(this.config.lazyLoad.spinnerClass ? this.config.lazyLoad.spinnerClass : 'ty-simple-spinner'));
-        }
-
-        /**
-         if (this.config.pushElement === 'body')
-         this.initContentWrapper();
-         /***/
-        this.initContentWrapper();
-
-        //this.pushElement = $('body');
-
-        this.$wrapper = wrapper = $('<div>')
-            .appendTo(this.$elem.parent())
-            .append(this.$elem);
-        /**/
-
-        if (this.config.isActive) {
-            this._addClasses();
-            this._calcWrapper();
-            this.moveTo(wrapper, this.colapsedPosition);
-        }
-
-        // move inner menu and bind action
-        var innerMenus = wrapper.find('.inner-menu');
-        if (innerMenus.length) {
-            this.moveTo(wrapper.find('.inner-menu'), this.colapsedPosition);
-            this.$elem.find('li>a, li>span').click(function (e) {
-                if (tyPM.isActive) {
-                    e.preventDefault();
-                    tyPM.showInner($(this).parent());
-                    return false;
-                }
-            });
-        }
-
-        // registr trigger
-        this.registrTrigger();
-
-        // init overlay
-        if (this.config.overlay) {
-            this.initOverlay();
-        }
-
-        /**/
-        //console.log('tyPM');
-        //console.log(this);
-
-        return this;
-    };
-
-
-    tyPushMenu.prototype._calcWrapper = function () {
-
-
-        var wrapper = this.$wrapper;
-
-        console.log(wrapper);
-
-        this.height = wrapper.outerHeight() * 1;
-        this.width = wrapper.outerWidth() * 1;
-
-        if (this.config.position === 'left') {
-            this.colapsedPosition.x = -this.width;
-            this.expandedPosition.x = 0;
-        }
-        if (this.config.position === 'right') {
-            this.colapsedPosition.x = this.width;
-            this.expandedPosition.x = 0;
-        }
-        if (this.config.position === 'top') {
-            this.colapsedPosition.y = -this.height;
-            this.expandedPosition.y = 0;
-        }
-        if (this.config.position === 'bottom') {
-            this.colapsedPosition.y = this.height;
-            this.expandedPosition.y = 0;
-        }
+        this.config;
+        this.positions = {};
 
     }
 
+    tyPushMenu.prototype.__menuInstances = [];
+    tyPushMenu.prototype.__expandedMenus = {};
+    tyPushMenu.prototype.__pages = {};
+    tyPushMenu.prototype.__activePages = [];
+    tyPushMenu.prototype.defaults = {
+        menuTrigger: '.ty-menu-trigger',
+        animationEngine: 'css', // css or js
+        position: 'left',
+        overlay: true,
+        lazyLoad: false,
+        isActive: true,
+        animation: {
+            show: {duration: 500, delay: 100},
+            hide: {duration: 300, delay: 0}
+        }
+    };
 
-    /**
-     * Lazyload content
-     */
-    tyPushMenu.prototype.lazyLoad = function () {
+
+    tyPushMenu.prototype._calculatePositions = function () {
+
+        var width = this.$elem.outerWidth(),
+            height = this.$elem.outerHeight();
+
+        if (this.config.position === 'left') {
+            this.positions.x = -width - 10;
+            this.positions.y = 0;//height;
+        }
+        if (this.config.position === 'right') {
+            this.positions.x = width + 10;
+            this.positions.y = 0;//height;
+        }
+        if (this.config.position === 'top') {
+            this.positions.x = 0;//width;
+            this.positions.y = -height - 10;
+        }
+        if (this.config.position === 'bottom') {
+            this.positions.x = 0;//width;
+            this.positions.y = height + 10;
+        }
+
+        console.log(this.positions);
+    };
+
+    tyPushMenu.prototype._createContentWrapper = function () {
+        var wrapper;
+
+        this.config.contentWrapperId = this.config.contentWrapperId || 'tyPushMenu-content-wrapper';
+
+        if (!(wrapper = $("#" + this.config.contentWrapperId)).length) {
+            wrapper = $('<div>').attr('id', this.config.contentWrapperId);
+            $('body').children().appendTo(wrapper);
+            wrapper.appendTo($('body'));
+        }
+
+        this.$wrapper = wrapper;
+    };
+
+    tyPushMenu.prototype._lazyLoad = function () {
 
         var ajaxRequest = {};
         var lazyLoad = this.config.lazyLoad;
         var tyPM = this;
 
         ajaxRequest.url = lazyLoad.url;
-        ajaxRequest.type = lazyLoad.method ? lazyLoad.method : 'POST';
-        ajaxRequest.dataType = lazyLoad.dataType ? lazyLoad.dataType : 'json';
+        ajaxRequest.type = lazyLoad.method || 'POST';
+        ajaxRequest.dataType = lazyLoad.dataType || 'json';
         if (lazyLoad.requestData) {
             ajaxRequest.data = lazyLoad.requestData;
         }
@@ -219,160 +115,200 @@
             }
 
             tyPM.$elem.html(content);
-            tyPM._calcWrapper();
-            tyPM.moveTo(tyPM.$wrapper, tyPM.colapsedPosition);
+            tyPM._setPositions();
+            tyPM._setPageTrigger();
             tyPM.loaded = true;
-            tyPM._show();
+
+
+            tyPM.show();
         };
 
 
         $.ajax(ajaxRequest);
+
+
     };
 
-
-    tyPushMenu.prototype.moveTo = function ($elm, pos) {
-        if ($elm)
-            $elm.css({'transform': 'translate3d(' + pos.x + 'px,' + pos.y + 'px,' + pos.z + 'px)'});
+    tyPushMenu.prototype._setPositions = function () {
+        this._calculatePositions();
+        this._setPagePosition();
+        this.$elem.velocity({translateX: this.positions.x, translateY: this.positions.y}, 0);
     };
-
-    tyPushMenu.prototype.showInner = function ($this) {
-        var subMenu = $this.children('.inner-menu');
-        if (subMenu.length) {
-
-            this.createBackLink(subMenu);
-
-            var titleTag = this.getTitleTag(subMenu);
-            titleTag.html($this.children('a,span').html());
-
-            this.moveTo(subMenu, {x: 0, y: 0, z: 0});
-        }
-    };
-
-    tyPushMenu.prototype.createBackLink = function ($submenu) {
-        var tyPM = this;
-        if (!$submenu.children('.back-link').length) {
-            $('<span>').addClass('back-link').html('<<')
-                .prependTo($submenu)
+    tyPushMenu.prototype._initOverlay = function () {
+        var overlay = $('#ty-overlay');
+        var tyM = this;
+        if (!overlay.length) {
+            overlay = $('<div>')
+                .attr('id', 'ty-overlay')
                 .click(function () {
-                    tyPM.goBack($submenu);
-                });
+                    tyM.hideAll();
+                })
+                .appendTo($('body'));
         }
-
+        this.$overlay = overlay;
     };
 
-    tyPushMenu.prototype.goBack = function (element) {
-        this.moveTo($(element), this.colapsedPosition);
+    tyPushMenu.prototype._setPagePosition = function () {
+        this.$elem.find('.ty-menu-page, .inner-menu').velocity({
+            translateX: this.positions.x,
+            translateY: this.positions.y
+        }, 0);
     };
 
+    tyPushMenu.prototype._show = function () {
+        this.$elem.show().velocity({translateX: 0, translateY: 0}, this.config.animation.show);
+        this.$wrapper
+            .velocity({translateX: -this.positions.x, translateY: -this.positions.y}, this.config.animation.show);
+        this.$body.css('overflow', 'hidden');
+        this.$overlay.show().velocity({opacity: 0.8}, this.config.animation.show)
 
-    tyPushMenu.prototype.getTitleTag = function ($elm) {
-        var titleTag = $elm.children('.title');
-        if (!titleTag.length) {
-            titleTag = $('<span>').addClass('title').prependTo($elm);
-        }
-        return titleTag;
+        this.__expandedMenus[this.id] = true;
+
+        this.isVisiable = true;
     };
 
-
-    /**
-     * show menu
-     * @returns {this}
-     */
-    tyPushMenu.prototype.showMenu = function () {
+    tyPushMenu.prototype.show = function () {
 
         if (!this.loaded && this.config.lazyLoad) {
-            this.lazyLoad();
+            this._lazyLoad();
         } else {
             this._show();
         }
         return this;
     };
 
-    tyPushMenu.prototype._show = function () {
-        var wrapper = this.$wrapper;
-        var pushedElm = $(this.pushElement);
-        wrapper.addClass('animated');
-        pushedElm.addClass('animated');
+    tyPushMenu.prototype.hide = function () {
 
-        //console.log(pushedElm);
+        this.$elem.velocity(
+            {
+                translateX: this.positions.x,
+                translateY: this.positions.y
+            },
+            this.config.animation.hide
+        );
 
-        if (!this.isVisiable) {
-
-
-            this.isVisiable = true;
-
-            var pElmPosition = Object.create(this.colapsedPosition);
-            if (this.config.position === 'left') {
-                pElmPosition.x = this.width;
+        this.$wrapper.velocity(
+            {
+                translateX: 0,
+                translateY: 0
+            },
+            this.config.animation.hide
+        );
+        this.$body.css('overflow', 'auto');
+        this.isVisiable = false;
+        this.$overlay.velocity({opacity: 0}, {
+                duration: this.config.animation.hide.duration,
+                delay: this.config.animation.hide.delay,
+                complete: function () {
+                    $(this).hide();
+                }
             }
-            if (this.config.position === 'right') {
-                pElmPosition.x = -this.width;
-            }
-            if (this.config.position === 'top') {
-                pElmPosition.y = this.height;
-            }
-            if (this.config.position === 'bottom') {
-                pElmPosition.y = -this.height;
-            }
+        )
 
-
-            this.moveTo(pushedElm, pElmPosition);
-
-            this.$elem.show();
-            this.$wrapper.show();
-            //this.moveTo(wrapper, this.expandedPosition);
-
-            this.showOverlay();
-            this.expandedMenus.push(this);
-            //alert( this.expandedMenus.length );
-        }
-        return this.isVisiable;
-    }
-
-    tyPushMenu.prototype.hideMenu = function () {
-        if (this.isVisiable) {
-            this.isVisiable = false;
-            var pushedElm = $(this.pushElement);
-            var pElmPosition = this.colapsedPosition;
-
-            this.moveTo(pushedElm, {x: 0, y: 0, z: 0});
-            this.moveTo(this.$wrapper, pElmPosition);
-            //this.$elem.hide(600);
-            this.$wrapper.hide(600);
-            this.hideOverlay();
-        }
+        delete this.__expandedMenus[this.id];
         return this;
     };
 
-    tyPushMenu.prototype.toggle = function () {
-        return (this.isVisiable) ? this.hideMenu() : this.showMenu();
-    };
-
-
-    tyPushMenu.prototype.initOverlay = function () {
-        var overlay = $('#ty-overlay');
-        var tyPushMenu = this;
-        if (!overlay.length) {
-            overlay = $('<div>')
-                .attr('id', 'ty-overlay')
-                .click(tyPushMenu.hideAll)
-                .appendTo($('body'));
+    tyPushMenu.prototype.hideAll = function () {
+        var index, menu;
+        for (index in  this.__expandedMenus) {
+            if (menu = this.__menuInstances[index]) menu.hide();
         }
     };
 
-    tyPushMenu.prototype.hideOverlay = function () {
-        var overlay = $('#ty-overlay');
-        if (overlay.length) {
-            overlay.removeClass('show');
+    tyPushMenu.prototype._setPageTrigger = function () {
+        var tyM = this;
+        tyM.$elem.find('[data-show-page]').click(function () {
+            console.log('triggered');
+            pageId = $(this).data('show-page');
+            tyM.showPage(pageId);
+        });
+    };
+
+
+    tyPushMenu.prototype.__showPage = function ($page) {
+        if ($page) {
+            $page.show().velocity(
+                {
+                    opacity: 1,
+                    translateX: 0,
+                    translateY: 0
+                },
+                this.config.animation.show
+            );
+        }
+    }
+
+    tyPushMenu.prototype.showPage = function (pageId) {
+        var $page;
+        if ($page = this.getPage(pageId)) {
+            this.__activePages.push(pageId);
+            this.__showPage($page);
         }
     };
 
-    tyPushMenu.prototype.showOverlay = function () {
-        var overlay = $('#ty-overlay');
-        if (overlay.length) {
-            overlay.addClass('show');
+    tyPushMenu.prototype.hidePage = function () {
+        if (this.__activePages.length) {
+            $page = this.__activePages.pop();
+            this.__hidePage($page);
         }
     };
+
+    tyPushMenu.prototype.__hidePage = function ($page) {
+        if ($page) {
+            $page.show().velocity(
+                {
+                    opacity: 1,
+                    translateX: this.positions.x,
+                    translateY: this.positions.y
+                },
+                this.config.animation.show
+            );
+        }
+    };
+
+    tyPushMenu.prototype.getPage = function (pageId) {
+        var $page;
+        if (!(($page = this.__pages[pageId]) && $page.length)) {
+            $page = this.$elem.find('#' + pageId);
+            this.__pages[pageId] = $page;
+        }
+        return $page.length ? $page : null;
+    };
+
+
+    tyPushMenu.prototype.init = function () {
+
+        var tym = this;
+
+        this.config = $.extend({}, this.defaults, this.options, this.metaData);
+
+        this.__menuInstances.push(this);
+        this.id = this.__menuInstances.length - 1;
+
+        //LazyLoad Spinner
+        if (this.config.lazyLoad) {
+            this.loaded = false;
+            this.$elem.append($('<span>').addClass(this.config.lazyLoad.spinnerClass ? this.config.lazyLoad.spinnerClass : 'ty-simple-spinner'));
+        }
+
+        this.$elem.addClass('ty-menu ty-menu-' + this.config.position);
+
+        this._initOverlay();
+        this._createContentWrapper();
+        this.registrTrigger();
+
+        this._setPositions();
+        this._setPageTrigger();
+        //this._calculatePositions();
+        //this._setPagePosition();
+
+        this.$elem.velocity({translateX: this.positions.x, translateY: this.positions.y}, 0);
+        this.$elem.appendTo($('body'));
+
+        return tym;
+    };
+
 
     /**
      * @param {type} trigger
@@ -382,33 +318,24 @@
         if (trigger)
             this.config.menuTrigger = trigger;
 
-        var tyPushMenu = this;
+        var tyM = this;
         $(document).on('click', this.config.menuTrigger, function () {
-            tyPushMenu.toggle();
+            tyM.toggle();
         });
     };
 
-    tyPushMenu.prototype.disable = function () {
-        this.isActive = false;
-        this._removeClasses();
-        this.$elem.show();
-        this.moveTo(this.$wrapper, {x: 0, y: 0, z: 0});
-    };
-    tyPushMenu.prototype.enable = function () {
-        this.isActive = true;
-        this._addClasses();
-        this._calcWrapper(this.$wrapper);
-        this.moveTo(this.$wrapper, this.colapsedPosition);
+
+    tyPushMenu.prototype.toggle = function () {
+        ( this.isVisiable ) ? this.hide() : this.show();
     };
 
 
     /**
-     * Registr jQuery Plugin
-     * @param {type} options
-     * @returns {ty.pushmenu_L15.$.fn@call;each}
+     * registr jQuery
+     * @param options
+     * @return {*}
      */
     $.fn.tyPushMenu = function (options) {
-
         return new tyPushMenu(this, options).init();
         /*
          return this.each(function () {
@@ -419,8 +346,3 @@
 
 
 })(jQuery, window, document);
-
-
-
-
-

@@ -1,6 +1,6 @@
 {
   "name": "ty-push-menu",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "description": "Simple pushmenu",
   "main": "index.js",
   "repository": {
