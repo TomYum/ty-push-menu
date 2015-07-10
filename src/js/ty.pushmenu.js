@@ -16,6 +16,8 @@
     tyPushMenu = function (elem, options) {
         this.elem = elem;
         this.$elem = $(elem);
+        this.wrapper;
+        this.menuWrapper;
         this.options = options;
         this.metaData = this.$elem.data('tyPushMenu');
         this.$body = $('body');
@@ -45,8 +47,8 @@
 
     tyPushMenu.prototype._calculatePositions = function () {
 
-        var width = this.$elem.outerWidth(),
-            height = this.$elem.outerHeight();
+        var width = this.$menuWrapper.outerWidth(),
+            height = this.$menuWrapper.outerHeight();
 
         if (this.config.position === 'left') {
             this.positions.x = -width - 10;
@@ -132,7 +134,7 @@
     tyPushMenu.prototype._setPositions = function () {
         this._calculatePositions();
         this._setPagePosition();
-        this.$elem.velocity({translateX: this.positions.x, translateY: this.positions.y}, 0);
+        this.$menuWrapper.velocity({translateX: this.positions.x, translateY: this.positions.y}, 0);
     };
     tyPushMenu.prototype._initOverlay = function () {
         var overlay = $('#ty-overlay');
@@ -148,15 +150,19 @@
         this.$overlay = overlay;
     };
 
+    tyPushMenu.prototype._createWrapper = function () {
+
+    }
+
     tyPushMenu.prototype._setPagePosition = function () {
-        this.$elem.find('.ty-menu-page, .inner-menu').velocity({
+        this.$menuWrapper.find('.ty-menu-page, .inner-menu').velocity({
             translateX: this.positions.x,
             translateY: this.positions.y
         }, 0);
     };
 
     tyPushMenu.prototype._show = function () {
-        this.$elem.show().velocity({translateX: 0, translateY: 0}, this.config.animation.show);
+        this.$menuWrapper.show().velocity({translateX: 0, translateY: 0}, this.config.animation.show);
         this.$wrapper
             .velocity({translateX: -this.positions.x, translateY: -this.positions.y}, this.config.animation.show);
         this.$body.css('overflow', 'hidden');
@@ -179,7 +185,7 @@
 
     tyPushMenu.prototype.hide = function () {
 
-        this.$elem.velocity(
+        this.$menuWrapper.velocity(
             {
                 translateX: this.positions.x,
                 translateY: this.positions.y
@@ -218,7 +224,7 @@
 
     tyPushMenu.prototype._setPageTrigger = function () {
         var tyM = this;
-        tyM.$elem.find('[data-show-page]').click(function () {
+        tyM.$menuWrapper.find('[data-show-page]').click(function () {
             console.log('triggered');
             pageId = $(this).data('show-page');
             tyM.showPage(pageId);
@@ -270,7 +276,7 @@
     tyPushMenu.prototype.getPage = function (pageId) {
         var $page;
         if (!(($page = this.__pages[pageId]) && $page.length)) {
-            $page = this.$elem.find('#' + pageId);
+            $page = this.$menuWrapper.find('#' + pageId);
             this.__pages[pageId] = $page;
         }
         return $page.length ? $page : null;
@@ -292,7 +298,13 @@
             this.$elem.append($('<span>').addClass(this.config.lazyLoad.spinnerClass ? this.config.lazyLoad.spinnerClass : 'ty-simple-spinner'));
         }
 
-        this.$elem.addClass('ty-menu ty-menu-' + this.config.position);
+        this.$menuWrapper = $('<div>').addClass('ty-menu ty-menu-' + this.config.position);
+        this.$elem.addClass('ty-menu-inner');
+        //this.$menuWrapper.appendTo( $('body') );
+        $('html').append(this.$menuWrapper);
+
+        this.$menuWrapper.append(this.$elem);
+        //this.$elem.appendTo( this.$menuWrapper );
 
         this._initOverlay();
         this._createContentWrapper();
@@ -303,8 +315,8 @@
         //this._calculatePositions();
         //this._setPagePosition();
 
-        this.$elem.velocity({translateX: this.positions.x, translateY: this.positions.y}, 0);
-        this.$elem.appendTo($('body'));
+        this.$menuWrapper.velocity({translateX: this.positions.x, translateY: this.positions.y}, 0);
+        //this.$menuWrapper.appendTo($('body'));
 
         return tym;
     };

@@ -131,10 +131,14 @@ $ty-pushmenu-wrapper-color: #003456 !default;
   }
 }
 
+
 .ty-menu {
   position: fixed;
-  background: #2aabd2;
+  background: $ty-pushmenu-wrapper-color;
   min-width: 20%;
+  color: #fff;
+
+
 
   .ty-menu-page, .inner-menu {
     display: none;
@@ -154,24 +158,28 @@ $ty-pushmenu-wrapper-color: #003456 !default;
   left: 0;
   top: 0;
   bottom: 0;
+  padding: 1rem 1.6rem 1rem 1rem;
 }
 
 .ty-menu-right {
   right: 0;
   top: 0;
   bottom: 0;
+  padding: 1rem 1rem 1rem 1.6rem;
 }
 
 .ty-menu-top {
   right: 0;
   left: 0;
   top: 0;
+  padding: 1.6rem 1rem 1rem 1rem;
 }
 
 .ty-menu-bottom {
   right: 0;
   left: 0;
   bottom: 0;
+  padding: 1rem 1rem 1.6rem 1rem;
 }
 
 .ty-menu-bottom, .ty-menu-top {
