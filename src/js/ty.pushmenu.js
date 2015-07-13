@@ -14,6 +14,8 @@
 (function ($, window, document, undefined) {
 
     tyPushMenu = function (elem, options) {
+        this.enabled = false;
+
         this.elem = elem;
         this.$elem = $(elem);
         this.wrapper;
@@ -21,6 +23,7 @@
         this.options = options;
         this.metaData = this.$elem.data('tyPushMenu');
         this.$body = $('body');
+        this.$nearElem;
 
         this.config;
         this.positions = {};
@@ -97,6 +100,7 @@
             ajaxRequest.data = lazyLoad.requestData;
         }
 
+
         ajaxRequest.success = function (data) {
             var content;
 
@@ -120,8 +124,6 @@
             tyPM._setPositions();
             tyPM._setPageTrigger();
             tyPM.loaded = true;
-
-
             tyPM.show();
         };
 
@@ -292,6 +294,11 @@
         this.__menuInstances.push(this);
         this.id = this.__menuInstances.length - 1;
 
+        /* Finding previous element or parent if this element is first. */
+        if (!(this.$nearElem = this.$elem.prev()).length) {
+            this.$parent = this.$elem.parent();
+        }
+
         //LazyLoad Spinner
         if (this.config.lazyLoad) {
             this.loaded = false;
@@ -303,7 +310,10 @@
         //this.$menuWrapper.appendTo( $('body') );
         $('html').append(this.$menuWrapper);
 
-        this.$menuWrapper.append(this.$elem);
+        if (this.config.isActive) {
+            this.enable();
+        }
+
         //this.$elem.appendTo( this.$menuWrapper );
 
         this._initOverlay();
@@ -350,6 +360,21 @@
     tyPushMenu.prototype.toggle = function () {
         ( this.isVisiable ) ? this.hide() : this.show();
     };
+
+    tyPushMenu.prototype.enable = function () {
+        this.$menuWrapper.append(this.$elem);
+        this._calculatePositions();
+        this.enabled = true;
+    }
+
+    tyPushMenu.prototype.disable = function () {
+        if (this.$nearElem && this.$nearElem.length) {
+            this.$elem.after(this.$nearElem);
+        } else {
+            this.$parent.prepend(this.$elem);
+        }
+        this.enabled = false;
+    }
 
 
     /**
