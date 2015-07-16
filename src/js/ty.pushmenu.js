@@ -27,13 +27,19 @@
 
         this.config;
         this.positions = {};
-
+        this.__menuInstances.push(this);
+        this.$elem.data('typmId', this.__menuInstances.length - 1);
     }
 
     tyPushMenu.prototype.__menuInstances = [];
     tyPushMenu.prototype.__expandedMenus = {};
     tyPushMenu.prototype.__pages = {};
     tyPushMenu.prototype.__activePages = [];
+
+    tyPushMenu.prototype.getInstance = function (id) {
+        return tyPushMenu.prototype.__menuInstances[id];
+    }
+
     tyPushMenu.prototype.defaults = {
         menuTrigger: '.ty-menu-trigger',
         animationEngine: 'css', // css or js
@@ -383,7 +389,13 @@
      * @return {*}
      */
     $.fn.tyPushMenu = function (options) {
-        return new tyPushMenu(this, options).init();
+        var typmId, typm;
+        if (!( typmId = this.data('typmId')) && typmId !== 0) {
+            return new tyPushMenu(this, options).init();
+        } else {
+            return ( typm = tyPushMenu.prototype.getInstance(typmId) ) ? typm : new tyPushMenu(this, options).init();
+
+        }
         /*
          return this.each(function () {
          new tyPushMenu(this, options).init();
