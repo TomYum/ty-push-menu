@@ -48,7 +48,7 @@
         lazyLoad: false,
         isActive: true,
         animation: {
-            show: {duration: 500, delay: 100},
+            show: {duration: 500, delay: 0},
             hide: {duration: 300, delay: 0}
         }
     };
@@ -170,7 +170,13 @@
     };
 
     tyPushMenu.prototype._show = function () {
-        this.$menuWrapper.show().velocity({translateX: 0, translateY: 0}, this.config.animation.show);
+        this.$menuWrapper.show().velocity(
+            {translateX: 0, translateY: 0},
+            {
+                duration: this.config.animation.show.duration,
+                delay: this.config.animation.show.delay,
+                display: 'block'
+            });
         this.$wrapper
             .velocity({translateX: -this.positions.x, translateY: -this.positions.y}, this.config.animation.show);
         this.$body.css('overflow', 'hidden');
@@ -196,10 +202,14 @@
         this.$menuWrapper.velocity(
             {
                 translateX: this.positions.x,
-                translateY: this.positions.y
+                translateY: this.positions.y,
             },
-            this.config.animation.hide
-        );
+            {
+                duration: this.config.animation.hide.duration,
+                ddelay: this.config.animation.hide.delay,
+                display: 'none'
+            }
+        ).velocity({display: "none"});
 
         this.$wrapper.velocity(
             {

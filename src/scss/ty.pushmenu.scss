@@ -145,6 +145,7 @@ $ty-pushmenu-wrapper-shadow-size: .8rem !default;
   min-width: 20%;
   color: #fff;
   z-index: 30;
+  display: none;
 
   .ty-menu-page, .inner-menu {
     display: none;
@@ -182,7 +183,7 @@ $ty-pushmenu-wrapper-shadow-size: .8rem !default;
   bottom: 0;
 
   @include shadow(
-          $ty-pushmenu-wrapper-shadow-offset 0 $ty-pushmenu-wrapper-shadow-size $ty-pushmenu-wrapper-shadow-color
+          -$ty-pushmenu-wrapper-shadow-offset 0 $ty-pushmenu-wrapper-shadow-size $ty-pushmenu-wrapper-shadow-color
   );
 
   &, .ty-menu-page, .inner-menu {
@@ -209,7 +210,7 @@ $ty-pushmenu-wrapper-shadow-size: .8rem !default;
   left: 0;
   bottom: 0;
   @include shadow(
-          0 $ty-pushmenu-wrapper-shadow-offset $ty-pushmenu-wrapper-shadow-size $ty-pushmenu-wrapper-shadow-color
+          0 -$ty-pushmenu-wrapper-shadow-offset $ty-pushmenu-wrapper-shadow-size $ty-pushmenu-wrapper-shadow-color
   );
 
   &, .ty-menu-page, .inner-menu {
