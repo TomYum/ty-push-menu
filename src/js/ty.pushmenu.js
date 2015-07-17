@@ -243,9 +243,23 @@
     tyPushMenu.prototype._setPageTrigger = function () {
         var tyM = this;
         tyM.$menuWrapper.find('[data-show-page]').click(function () {
-            console.log('triggered');
-            pageId = $(this).data('show-page');
+
+            var pageId = $(this).data('show-page');
             tyM.showPage(pageId);
+        });
+        tyM.$menuWrapper.find('.hide-trigger').click(function () {
+            tyM.hidePage(pageId);
+        });
+
+
+        tyM.$menuWrapper.find('[data-hide-before-index]').click(function () {
+            var index = $(this).data('data-hide-before-index') || 0;
+            tyM.hidePagesBeforeIndex(index);
+        });
+
+
+        tyM.$menuWrapper.find('.hide-all-trigger').click(function () {
+            tyM.hideAllPages();
         });
     };
 
@@ -275,9 +289,21 @@
     };
 
     tyPushMenu.prototype.hidePage = function () {
+        var $page;
         if (this.__activePages.length) {
             $page = this.__activePages.pop();
             this.__hidePage($page);
+        }
+    };
+    tyPushMenu.prototype.hidePagesBeforeIndex = function (PageIndex) {
+        var index, $page;
+
+        if ((PageIndex || PageIndex === 0) && (index = this.__activePages.length)) {
+            index--;
+            while ($page = this.__activePages.pop() && index !== PageIndex) {
+                this.__hidePage($page);
+                index--;
+            }
         }
     };
 
