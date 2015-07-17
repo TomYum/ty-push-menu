@@ -16,7 +16,10 @@ $ty-pushmenu-item-color: #fff !default;
 $ty-pushmenu-overlay-color: #fafafa !default;
 $ty-pushmenu-overlay-opacity: 0.85 !default;
 $ty-pushmenu-wrapper-color: #003456 !default;
-$ty-pushmenu-wrapper-shadow: 0 0 5px #222 !default;
+
+$ty-pushmenu-wrapper-shadow-color: #222 !default;
+$ty-pushmenu-wrapper-shadow-offset: .5rem !default;
+$ty-pushmenu-wrapper-shadow-size: .8rem !default;
 
 @mixin translate3d($x: 0px, $y: 0px) {
   $z: 0px;
@@ -142,7 +145,6 @@ $ty-pushmenu-wrapper-shadow: 0 0 5px #222 !default;
   min-width: 20%;
   color: #fff;
   z-index: 30;
-  @include shadow($ty-pushmenu-wrapper-shadow);
 
   .ty-menu-page, .inner-menu {
     display: none;
@@ -164,6 +166,10 @@ $ty-pushmenu-wrapper-shadow: 0 0 5px #222 !default;
   top: 0;
   bottom: 0;
 
+  @include shadow(
+          $ty-pushmenu-wrapper-shadow-offset 0 $ty-pushmenu-wrapper-shadow-size $ty-pushmenu-wrapper-shadow-color
+  );
+
   &, .ty-menu-page, .inner-menu {
     padding: 1rem 1.6rem 1rem 1rem;
   }
@@ -175,6 +181,10 @@ $ty-pushmenu-wrapper-shadow: 0 0 5px #222 !default;
   top: 0;
   bottom: 0;
 
+  @include shadow(
+          $ty-pushmenu-wrapper-shadow-offset 0 $ty-pushmenu-wrapper-shadow-size $ty-pushmenu-wrapper-shadow-color
+  );
+
   &, .ty-menu-page, .inner-menu {
     padding: 1rem 1rem 1rem 1.6rem;
   }
@@ -184,15 +194,24 @@ $ty-pushmenu-wrapper-shadow: 0 0 5px #222 !default;
   right: 0;
   left: 0;
   top: 0;
+  @include shadow(
+          0 $ty-pushmenu-wrapper-shadow-offset $ty-pushmenu-wrapper-shadow-size $ty-pushmenu-wrapper-shadow-color
+  );
+
   &, .ty-menu-page, .inner-menu {
     padding: 1.6rem 1rem 1rem 1rem;
   }
+
 }
 
 .ty-menu-bottom {
   right: 0;
   left: 0;
   bottom: 0;
+  @include shadow(
+          0 $ty-pushmenu-wrapper-shadow-offset $ty-pushmenu-wrapper-shadow-size $ty-pushmenu-wrapper-shadow-color
+  );
+
   &, .ty-menu-page, .inner-menu {
     padding: 1rem 1rem 1.6rem 1rem;
   }
