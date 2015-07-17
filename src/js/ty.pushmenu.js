@@ -163,7 +163,7 @@
     }
 
     tyPushMenu.prototype._setPagePosition = function () {
-        this.$menuWrapper.find('.menu-page, .inner-menu').velocity({
+        this.$menuWrapper.find('.menu-page:not(.active,.default), .inner-menu:not(.active,.default)').velocity({
             translateX: this.positions.x,
             translateY: this.positions.y
         }, 0);
@@ -254,11 +254,14 @@
         if ($page) {
             $page.show().velocity(
                 {
-                    opacity: 1,
                     translateX: 0,
                     translateY: 0
                 },
-                this.config.animation.show
+                {
+                    duration: this.config.animation.show.duration,
+                    delay: this.config.animation.show.delay,
+                    display: "block"
+                }
             );
         }
     }
@@ -278,15 +281,28 @@
         }
     };
 
+
+    tyPushMenu.prototype.hideAllPages = function () {
+        if (this.__activePages.length) {
+            while ($page = this.__activePages.pop()) {
+                this.__hidePage($page);
+            }
+        }
+    };
+
+
     tyPushMenu.prototype.__hidePage = function ($page) {
         if ($page) {
             $page.show().velocity(
                 {
-                    opacity: 1,
                     translateX: this.positions.x,
                     translateY: this.positions.y
                 },
-                this.config.animation.show
+                {
+                    duration: this.config.animation.hide.duration,
+                    delay: this.config.animation.hide.delay,
+                    display: "block"
+                }
             );
         }
     };
