@@ -248,7 +248,7 @@
             tyM.showPage(pageId);
         });
         tyM.$menuWrapper.find('.hide-trigger').click(function () {
-            tyM.hidePage(pageId);
+            tyM.hidePage();
         });
 
 
@@ -319,7 +319,8 @@
 
     tyPushMenu.prototype.__hidePage = function ($page) {
         if ($page) {
-            $page.show().velocity(
+            console.log($page);
+            $page.velocity(
                 {
                     translateX: this.positions.x,
                     translateY: this.positions.y
