@@ -163,7 +163,7 @@
     }
 
     tyPushMenu.prototype._setPagePosition = function () {
-        this.$menuWrapper.find('.ty-menu-page, .inner-menu').velocity({
+        this.$menuWrapper.find('.menu-page, .inner-menu').velocity({
             translateX: this.positions.x,
             translateY: this.positions.y
         }, 0);

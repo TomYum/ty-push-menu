@@ -147,7 +147,7 @@ $ty-pushmenu-wrapper-shadow-size: .8rem !default;
   z-index: 30;
   display: none;
 
-  .ty-menu-page, .inner-menu {
+  .menu-page, .inner-menu {
     display: none;
     opacity: 0;
     position: absolute;
@@ -158,6 +158,9 @@ $ty-pushmenu-wrapper-shadow-size: .8rem !default;
     //width: 100%;
     //height: 100%;
     background: $ty-pushmenu-wrapper-color;
+    &.active, &.default {
+      display: block;
+    }
   }
 
 }
@@ -171,7 +174,7 @@ $ty-pushmenu-wrapper-shadow-size: .8rem !default;
           $ty-pushmenu-wrapper-shadow-offset 0 $ty-pushmenu-wrapper-shadow-size $ty-pushmenu-wrapper-shadow-color
   );
 
-  &, .ty-menu-page, .inner-menu {
+  &, .menu-page, .inner-menu {
     padding: 1rem 1.6rem 1rem 1rem;
   }
 
@@ -186,7 +189,7 @@ $ty-pushmenu-wrapper-shadow-size: .8rem !default;
           -$ty-pushmenu-wrapper-shadow-offset 0 $ty-pushmenu-wrapper-shadow-size $ty-pushmenu-wrapper-shadow-color
   );
 
-  &, .ty-menu-page, .inner-menu {
+  &, .menu-page, .inner-menu {
     padding: 1rem 1rem 1rem 1.6rem;
   }
 }
@@ -199,7 +202,7 @@ $ty-pushmenu-wrapper-shadow-size: .8rem !default;
           0 $ty-pushmenu-wrapper-shadow-offset $ty-pushmenu-wrapper-shadow-size $ty-pushmenu-wrapper-shadow-color
   );
 
-  &, .ty-menu-page, .inner-menu {
+  &, .menu-page, .inner-menu {
     padding: 1.6rem 1rem 1rem 1rem;
   }
 
@@ -213,7 +216,7 @@ $ty-pushmenu-wrapper-shadow-size: .8rem !default;
           0 -$ty-pushmenu-wrapper-shadow-offset $ty-pushmenu-wrapper-shadow-size $ty-pushmenu-wrapper-shadow-color
   );
 
-  &, .ty-menu-page, .inner-menu {
+  &, .menu-page, .inner-menu {
     padding: 1rem 1rem 1.6rem 1rem;
   }
 }
