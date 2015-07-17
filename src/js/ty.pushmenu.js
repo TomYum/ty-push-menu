@@ -291,16 +291,17 @@
     tyPushMenu.prototype.hidePage = function () {
         var $page;
         if (this.__activePages.length) {
-            $page = this.__activePages.pop();
+            $page = this.getPage(this.__activePages.pop());
             this.__hidePage($page);
         }
     };
     tyPushMenu.prototype.hidePagesBeforeIndex = function (PageIndex) {
-        var index, $page;
+        var index, pageId, $page;
 
         if ((PageIndex || PageIndex === 0) && (index = this.__activePages.length)) {
             index--;
-            while ($page = this.__activePages.pop() && index !== PageIndex) {
+            while (pageId = this.__activePages.pop() && index !== PageIndex) {
+                $page = this.getPage(pageId);
                 this.__hidePage($page);
                 index--;
             }
@@ -309,17 +310,19 @@
 
 
     tyPushMenu.prototype.hideAllPages = function () {
+        var pageId, $page;
+
         if (this.__activePages.length) {
-            while ($page = this.__activePages.pop()) {
+            while (pageId = this.__activePages.pop()) {
+                $page = this.getPage(pageId);
                 this.__hidePage($page);
             }
         }
     };
 
-
     tyPushMenu.prototype.__hidePage = function ($page) {
         if ($page) {
-            console.log($page);
+
             $page.velocity(
                 {
                     translateX: this.positions.x,
