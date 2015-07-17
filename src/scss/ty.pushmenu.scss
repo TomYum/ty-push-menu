@@ -16,6 +16,7 @@ $ty-pushmenu-item-color: #fff !default;
 $ty-pushmenu-overlay-color: #fafafa !default;
 $ty-pushmenu-overlay-opacity: 0.85 !default;
 $ty-pushmenu-wrapper-color: #003456 !default;
+$ty-pushmenu-font-color: #fff !default;
 
 $ty-pushmenu-wrapper-shadow-color: #222 !default;
 $ty-pushmenu-wrapper-shadow-offset: .5rem !default;
@@ -143,7 +144,7 @@ $ty-pushmenu-wrapper-shadow-size: .8rem !default;
   position: fixed;
   background: $ty-pushmenu-wrapper-color;
   min-width: 20%;
-  color: #fff;
+  color: $ty-pushmenu-font-color;
   z-index: 30;
   display: none;
 
