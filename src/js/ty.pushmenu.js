@@ -335,8 +335,7 @@
         //this.$menuWrapper.appendTo($('body'));
 
 
-        $(window).resize(function () {
-
+        $(this.$elem).resize(function () {
             if (!tym.isVisiable) {
                 tym._setPositions();
             } else {
