@@ -271,8 +271,9 @@
         var PWeb = this, $triggers, $menus;
 
         if (( $menus = this.$elem.find('.inner-menu') ) && $menus.length) {
-            $triggers = $menus.siblings('a');
-            $triggers.click(function () {
+            $triggers = $menus.siblings('a,span');
+            $triggers.click(function (e) {
+                e.preventDefault();
                 PWeb.showSubmenu(this);
                 return false;
             });
