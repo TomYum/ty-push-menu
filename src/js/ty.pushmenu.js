@@ -275,6 +275,7 @@
             $triggers = $menus.siblings('a,span');
             $triggers.click(function (e) {
                 e.preventDefault();
+
                 PWeb.showSubmenu(this);
                 return false;
             });
@@ -286,9 +287,19 @@
     };
     tyPushMenu.prototype.showSubmenu = function (trigger) {
         var $trigger = $(trigger),
-            $inner;
+            $inner, data;
+
+        data = $trigger.data();
 
         if (($inner = $trigger.siblings('.inner-menu') ) && $inner.length) {
+
+            if (!data.hasBacklink) {
+                var $link = $trigger.clone();
+                $link.prependTo($inner).addClass('.parent-link');
+                $('<span>').addClass('prev').html('<<').prependTo($inner);
+                $trigger.data('hasBacklink', true);
+            }
+
             this.__showPage($inner);
             this.__activeSubMenu.push($inner);
         }
