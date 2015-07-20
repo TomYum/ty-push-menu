@@ -132,6 +132,7 @@
             tyPM.$elem.html(content);
             tyPM._setPositions();
             tyPM._setPageTrigger();
+            tyPM.__initSubmenu();
             tyPM.loaded = true;
             tyPM.show();
         };
