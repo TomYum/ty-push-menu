@@ -29,12 +29,15 @@
         this.positions = {};
         this.__menuInstances.push(this);
         this.$elem.data('typmId', this.__menuInstances.length - 1);
+
+        this.__activeSubMenu = [];
     }
 
     tyPushMenu.prototype.__menuInstances = [];
     tyPushMenu.prototype.__expandedMenus = {};
     tyPushMenu.prototype.__pages = {};
     tyPushMenu.prototype.__activePages = [];
+
 
     tyPushMenu.prototype.getInstance = function (id) {
         return tyPushMenu.prototype.__menuInstances[id];
@@ -264,6 +267,44 @@
     };
 
 
+    tyPushMenu.prototype.__initSubmenu = function () {
+        var PWeb = this, $triggers, $menus;
+
+        if (( $menus = this.$elem.find('.inner-menu') ) && $menus.length) {
+            $triggers = $menus.siblings('a');
+            $triggers.click(function () {
+                PWeb.showSubmenu(this);
+                return false;
+            });
+
+            this.$elem.on('click', '.inner-menu .prev', function () {
+                PWeb.submenuPrev();
+            })
+        }
+    };
+    tyPushMenu.prototype.showSubmenu = function (trigger) {
+        var $trigger = $(trigger),
+            $inner;
+
+        if (($inner = $trigger.siblings('.inner-menu') ) && $inner.length) {
+            this.__showPage($inner);
+            this.__activeSubMenu.push($inner);
+        }
+    };
+    tyPushMenu.prototype.submenuPrev = function () {
+        var $lastMenu
+        if ($lastMenu = this.__activeSubMenu.pop()) {
+            this.__hidePage($lastMenu);
+        }
+    };
+    tyPushMenu.prototype.submenuHideAll = function () {
+        var $lastMenu
+        while ($lastMenu = this.__activeSubMenu.pop()) {
+            this.__hidePage($lastMenu);
+        }
+    };
+
+
     tyPushMenu.prototype.__showPage = function ($page) {
         if ($page) {
             $page.show().velocity(
@@ -384,6 +425,7 @@
 
         this._setPositions();
         this._setPageTrigger();
+        this.__initSubmenu();
         //this._calculatePositions();
         //this._setPagePosition();
 

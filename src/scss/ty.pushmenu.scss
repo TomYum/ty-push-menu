@@ -13,6 +13,7 @@ $ty-pushmenu-wrapper-padding-left: 5px !default;
 $ty-pushmenu-wrapper-padding-right: 5px !default;
 $ty-pushmenu-item-font-size: 1.25rem !default;
 $ty-pushmenu-item-color: #fff !default;
+$ty-pushmenu-item-border-color: #fff !default;
 $ty-pushmenu-overlay-color: #fafafa !default;
 $ty-pushmenu-overlay-opacity: 0.85 !default;
 $ty-pushmenu-wrapper-color: #003456 !default;
@@ -164,6 +165,33 @@ $ty-pushmenu-wrapper-shadow-size: .8rem !default;
     }
   }
 
+  ul, ol, li {
+    list-style: none;
+  }
+
+  li {
+    display: inline-block;
+    width: 100%;
+    padding: 0.2em 0.3em;
+    box-sizing: border-box;
+    color: $ty-pushmenu-item-color;
+    font-size: $ty-pushmenu-item-font-size;
+    border-bottom: 0.0675rem solid $ty-pushmenu-item-border-color;
+
+    a, span {
+      color: $ty-pushmenu-item-color;
+      font-size: inherit;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+        text-decoration-style: dotted;
+      }
+
+    }
+
+  }
+
 }
 
 .ty-menu-left {
@@ -171,12 +199,11 @@ $ty-pushmenu-wrapper-shadow-size: .8rem !default;
   top: 0;
   bottom: 0;
 
-  @include shadow(
-          $ty-pushmenu-wrapper-shadow-offset 0 $ty-pushmenu-wrapper-shadow-size $ty-pushmenu-wrapper-shadow-color
-  );
-
   &, .menu-page, .inner-menu {
     padding: 1rem 1.6rem 1rem 1rem;
+    @include shadow(
+            $ty-pushmenu-wrapper-shadow-offset 0 $ty-pushmenu-wrapper-shadow-size $ty-pushmenu-wrapper-shadow-color
+    );
   }
 
 }
@@ -186,12 +213,11 @@ $ty-pushmenu-wrapper-shadow-size: .8rem !default;
   top: 0;
   bottom: 0;
 
-  @include shadow(
-                  (-$ty-pushmenu-wrapper-shadow-offset) 0 $ty-pushmenu-wrapper-shadow-size $ty-pushmenu-wrapper-shadow-color
-  );
-
   &, .menu-page, .inner-menu {
     padding: 1rem 1rem 1rem 1.6rem;
+    @include shadow(
+                    (-$ty-pushmenu-wrapper-shadow-offset) 0 $ty-pushmenu-wrapper-shadow-size $ty-pushmenu-wrapper-shadow-color
+    );
   }
 }
 
@@ -199,12 +225,12 @@ $ty-pushmenu-wrapper-shadow-size: .8rem !default;
   right: 0;
   left: 0;
   top: 0;
-  @include shadow(
-          0 $ty-pushmenu-wrapper-shadow-offset $ty-pushmenu-wrapper-shadow-size $ty-pushmenu-wrapper-shadow-color
-  );
 
   &, .menu-page, .inner-menu {
     padding: 1.6rem 1rem 1rem 1rem;
+    @include shadow(
+            0 $ty-pushmenu-wrapper-shadow-offset $ty-pushmenu-wrapper-shadow-size $ty-pushmenu-wrapper-shadow-color
+    );
   }
 
 }
@@ -213,12 +239,12 @@ $ty-pushmenu-wrapper-shadow-size: .8rem !default;
   right: 0;
   left: 0;
   bottom: 0;
-  @include shadow(
-          0 (-$ty-pushmenu-wrapper-shadow-offset) $ty-pushmenu-wrapper-shadow-size $ty-pushmenu-wrapper-shadow-color
-  );
 
   &, .menu-page, .inner-menu {
     padding: 1rem 1rem 1.6rem 1rem;
+    @include shadow(
+            0 (-$ty-pushmenu-wrapper-shadow-offset) $ty-pushmenu-wrapper-shadow-size $ty-pushmenu-wrapper-shadow-color
+    );
   }
 }
 
