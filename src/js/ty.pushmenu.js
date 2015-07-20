@@ -295,7 +295,7 @@
 
             if (!data.hasBacklink) {
                 var $link = $trigger.clone();
-                $link.prependTo($inner).addClass('.parent-link');
+                $link.prependTo($inner).addClass('parent-link');
                 $('<span>').addClass('prev').html('<<').prependTo($inner);
                 $trigger.data('hasBacklink', true);
             }
