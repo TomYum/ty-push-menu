@@ -20,6 +20,7 @@
         this.$elem = $(elem);
         this.wrapper;
         this.menuWrapper;
+        this.$innerMenuWrapper;
         this.options = options;
         this.metaData = this.$elem.data('tyPushMenu');
         this.$body = $('body');
@@ -437,6 +438,7 @@
         }
 
         this.$menuWrapper = $('<div>').addClass('ty-menu ty-menu-' + this.config.position);
+        this.$innerMenuWrapper = $('<div>').addClass('ty-menu-wrapper').appendTo(this.$menuWrapper);
         this.$elem.addClass('ty-menu-inner');
         //this.$menuWrapper.appendTo( $('body') );
         $('html').append(this.$menuWrapper);
@@ -494,7 +496,7 @@
     };
 
     tyPushMenu.prototype.enable = function () {
-        this.$menuWrapper.append(this.$elem);
+        this.$innerMenuWrapper.append(this.$elem);
         this._calculatePositions();
         this.enabled = true;
     }

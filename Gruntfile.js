@@ -1,6 +1,6 @@
-module.exports = function ( grunt ) {
-    grunt.initConfig( {
-        pkg: grunt.file.readJSON( 'package.json' ),
+module.exports = function (grunt) {
+    grunt.initConfig({
+        pkg: grunt.file.readJSON('package.json'),
         sass: {
             options: {
                 includePaths: ['./_dev/bower_components/']
@@ -61,14 +61,15 @@ module.exports = function ( grunt ) {
                 tasks: ['uglify']
             }
         }
-    } );
-    grunt.loadNpmTasks( 'grunt-contrib-uglify' );
-    grunt.loadNpmTasks( 'grunt-contrib-watch' );
-    grunt.loadNpmTasks( 'grunt-contrib-cssmin' );
-    grunt.loadNpmTasks( 'grunt-sass' );
+    });
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-sass');
 
 
-    grunt.registerTask( 'default', ['sass', 'cssmin', 'uglify', 'watch'] );
-    grunt.registerTask( 'recreate', ['sass', 'cssmin', 'uglify', 'watch'] );
+    grunt.registerTask('default', ['sass', 'cssmin', 'uglify', 'watch']);
+    grunt.registerTask('recreate', ['sass', 'cssmin', 'uglify', 'watch']);
+    grunt.registerTask('no watch', ['sass', 'cssmin', 'uglify']);
 };
 
