@@ -156,7 +156,6 @@ $ty-pushmenu-wrapper-shadow-size: .8rem !default;
     overflow-x: hidden;
   }
 
-
   .menu-page, .inner-menu {
     display: none;
     //opacity: 0;
@@ -185,7 +184,7 @@ $ty-pushmenu-wrapper-shadow-size: .8rem !default;
     color: $ty-pushmenu-item-color;
     font-size: $ty-pushmenu-item-font-size;
 
-    @if ( $ty-pushmenu-item-border == yes ) {
+    @if ($ty-pushmenu-item-border == yes) {
       border-bottom: 0.0675rem solid $ty-pushmenu-item-border-color;
     }
 
@@ -261,10 +260,14 @@ $ty-pushmenu-wrapper-shadow-size: .8rem !default;
 
 .ty-menu-bottom, .ty-menu-top {
   max-height: 90%;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .ty-menu-left, .ty-menu-right {
   max-width: 50%;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 
