@@ -149,18 +149,18 @@
         this.$menuWrapper.velocity({translateX: this.positions.x, translateY: this.positions.y}, 0);
     };
 
-    tyPushMenu.prototype._initCloseBtn = function (){
-        var overlay = $('#ty-overlay');
+    tyPushMenu.prototype._initCloseBtn = function () {
+
         var tyM = this;
-        if (!overlay.length) {
-            overlay = $('<div>')
-                .addClass('ty-close-btn')
-                .html('x')
-                .click(function () {
-                    tyM.hideAll();
-                })
-                .appendTo( this.$elem );
-        }
+
+        closeBtn = $('<div>')
+            .addClass('ty-close-btn')
+            .html('x')
+            .click(function () {
+                tyM.hideAll();
+            })
+            .appendTo(this.$menuWrapper);
+
 
     };
     tyPushMenu.prototype._initOverlay = function () {
@@ -448,6 +448,7 @@
         //this.$elem.appendTo( this.$menuWrapper );
 
         this._initOverlay();
+        this._initCloseBtn();
         this._createContentWrapper();
         this.registrTrigger();
 
