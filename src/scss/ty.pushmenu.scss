@@ -155,6 +155,12 @@ $ty-pushmenu-wrapper-shadow-size: .8rem !default;
     overflow-y: auto;
     overflow-x: hidden;
     position: relative;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    position: relative;
+    display: block;
   }
 
   .menu-page, .inner-menu {
@@ -221,6 +227,7 @@ $ty-pushmenu-wrapper-shadow-size: .8rem !default;
   .ty-menu-wrapper {
     padding: 1rem 1.6rem 1rem 1rem;
     margin: -1rem -1.6rem -1rem -1rem;
+
   }
 
 }
@@ -283,14 +290,10 @@ $ty-pushmenu-wrapper-shadow-size: .8rem !default;
 
 .ty-menu-bottom, .ty-menu-top {
   max-height: 90%;
-  overflow-y: auto;
-  overflow-x: hidden;
 }
 
 .ty-menu-left, .ty-menu-right {
   max-width: 90%;
-  overflow-y: auto;
-  overflow-x: hidden;
 }
 
 
