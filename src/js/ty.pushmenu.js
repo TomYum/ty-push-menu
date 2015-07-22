@@ -52,6 +52,7 @@
         lazyLoad: false,
         isActive: true,
         backLinkTpl: '<span><<</span>',
+        closeBtnTpl: 'x',
         animation: {
             show: {duration: 500, delay: 0},
             hide: {duration: 300, delay: 0}
@@ -157,7 +158,7 @@
 
         closeBtn = $('<div>')
             .addClass('ty-close-btn')
-            .html(this.config.backLinkTpl)
+            .html(this.config.closeBtnTpl)
             .click(function () {
                 tyM.hideAll();
             })
@@ -313,7 +314,7 @@
             if (!data.hasBacklink) {
                 var $link = $trigger.clone();
                 $link.prependTo($inner).addClass('parent-link');
-                $('<span>').addClass('prev').html('<<').prependTo($inner);
+                $('<span>').addClass('prev').html(this.config.backLinkTpl).prependTo($inner);
                 $trigger.data('hasBacklink', true);
             }
 
