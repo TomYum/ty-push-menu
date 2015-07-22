@@ -51,6 +51,7 @@
         overlay: true,
         lazyLoad: false,
         isActive: true,
+        backLinkTpl: '<span><<</span>',
         animation: {
             show: {duration: 500, delay: 0},
             hide: {duration: 300, delay: 0}
@@ -156,7 +157,7 @@
 
         closeBtn = $('<div>')
             .addClass('ty-close-btn')
-            .html('x')
+            .html(this.config.backLinkTpl)
             .click(function () {
                 tyM.hideAll();
             })
