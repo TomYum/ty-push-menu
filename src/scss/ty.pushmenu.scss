@@ -211,11 +211,16 @@ $ty-pushmenu-wrapper-shadow-size: .8rem !default;
   top: 0;
   bottom: 0;
 
-  .ty-menu-wrapper, .menu-page, .inner-menu {
+  &, .menu-page, .inner-menu {
     padding: 1rem 1.6rem 1rem 1rem;
     @include shadow(
             $ty-pushmenu-wrapper-shadow-offset 0 $ty-pushmenu-wrapper-shadow-size $ty-pushmenu-wrapper-shadow-color
     );
+  }
+
+  .ty-menu-wrapper {
+    padding: 1rem 1.6rem 1rem 1rem;
+    margin: -1rem -1.6rem -1rem -1rem;
   }
 
 }
@@ -225,12 +230,18 @@ $ty-pushmenu-wrapper-shadow-size: .8rem !default;
   top: 0;
   bottom: 0;
 
-  .ty-menu-wrapper, .menu-page, .inner-menu {
+  &, .menu-page, .inner-menu {
     padding: 1rem 1rem 1rem 1.6rem;
     @include shadow(
                     (-$ty-pushmenu-wrapper-shadow-offset) 0 $ty-pushmenu-wrapper-shadow-size $ty-pushmenu-wrapper-shadow-color
     );
   }
+
+  .ty-menu-wrapper {
+    padding: 1rem 1rem 1rem 1.6rem;
+    margin: -1rem -1rem -1rem -1.6rem;
+  }
+
 }
 
 .ty-menu-top {
@@ -238,11 +249,16 @@ $ty-pushmenu-wrapper-shadow-size: .8rem !default;
   left: 0;
   top: 0;
 
-  .ty-menu-wrapper, .menu-page, .inner-menu {
+  &, .menu-page, .inner-menu {
     padding: 1.6rem 1rem 1rem 1rem;
     @include shadow(
             0 $ty-pushmenu-wrapper-shadow-offset $ty-pushmenu-wrapper-shadow-size $ty-pushmenu-wrapper-shadow-color
     );
+  }
+
+  .ty-menu-wrapper {
+    padding: 1.6rem 1rem 1rem 1rem;
+    margin: -1.6rem -1rem -1rem -1rem;
   }
 
 }
@@ -252,28 +268,29 @@ $ty-pushmenu-wrapper-shadow-size: .8rem !default;
   left: 0;
   bottom: 0;
 
-  .ty-menu-wrapper, .menu-page, .inner-menu {
+  &, .menu-page, .inner-menu {
     padding: 1rem 1rem 1.6rem 1rem;
     @include shadow(
             0 (-$ty-pushmenu-wrapper-shadow-offset) $ty-pushmenu-wrapper-shadow-size $ty-pushmenu-wrapper-shadow-color
     );
   }
+
+  .ty-menu-wrapper {
+    padding: 1rem 1rem 1.6rem 1rem;
+    margin: -1rem -1rem -1.6rem -1rem;
+  }
 }
 
 .ty-menu-bottom, .ty-menu-top {
-  .ty-menu-wrapper {
-    max-height: 90%;
-    overflow-y: auto;
-    overflow-x: hidden;
-  }
+  max-height: 90%;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .ty-menu-left, .ty-menu-right {
-  .ty-menu-wrapper {
-    max-width: 90%;
-    overflow-y: auto;
-    overflow-x: hidden;
-  }
+  max-width: 90%;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 
