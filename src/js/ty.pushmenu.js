@@ -92,7 +92,7 @@
 
         if (!(wrapper = $("#" + this.config.contentWrapperId)).length) {
             wrapper = $('<div>').attr('id', this.config.contentWrapperId);
-            $('body').children().appendTo(wrapper);
+            $('body').children(':not(.ty-menu)').appendTo(wrapper);
             wrapper.appendTo($('body'));
         }
 
@@ -443,7 +443,7 @@
         this.$innerMenuWrapper = $('<div>').addClass('ty-menu-wrapper').appendTo(this.$menuWrapper);
         this.$elem.addClass('ty-menu-inner');
         //this.$menuWrapper.appendTo( $('body') );
-        $('html').append(this.$menuWrapper);
+        $('body').append(this.$menuWrapper);
 
         if (this.config.isActive) {
             this.enable();

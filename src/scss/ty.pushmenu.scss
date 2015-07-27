@@ -70,6 +70,12 @@ $ty-pushmenu-wrapper-shadow-size: .8rem !default;
   box-shadow: $param;
 }
 
+@mixin border-radius($param) {
+  border-radius: $param;
+  -webkit-border-radius: $param;
+  -moz-border-radius: $param;
+}
+
 @each $position in $ty-pushmenu-positions {
 
   .ty-pm-#{$position} {
@@ -218,6 +224,9 @@ $ty-pushmenu-wrapper-shadow-size: .8rem !default;
     height: 1rem;
     @include border-radius(1rem);
     z-index: 31;
+    background: $ty-pushmenu-wrapper-color;
+    @include shadow(0 0 0.4rem #222);
+
   }
 }
 
