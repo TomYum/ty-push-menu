@@ -1,324 +1,122 @@
-/**
- *  Created on : 15.06.2015, 0:19:27
- *  Author     : Tom.Yum. (Artem Khmilevskiy)
- *  Site: https://github.com/TomYum/ty-push-menu
- *  Issues https://github.com/TomYum/ty-push-menu/issues
- */
 
-$ty-pushmenu-positions: top left bottom right;
-
-$ty-pushmenu-wrapper-padding-top: 10px !default;
-$ty-pushmenu-wrapper-padding-bottom: 10px !default;
-$ty-pushmenu-wrapper-padding-left: 5px !default;
-$ty-pushmenu-wrapper-padding-right: 5px !default;
-$ty-pushmenu-item-font-size: 1.25rem !default;
-$ty-pushmenu-item-color: #fff !default;
-$ty-pushmenu-item-border-color: #fff !default;
-$ty-pushmenu-item-border: yes !default;
-
-$ty-pushmenu-overlay-color: #fafafa !default;
-$ty-pushmenu-overlay-opacity: 0.85 !default;
-$ty-pushmenu-wrapper-color: #003456 !default;
-$ty-pushmenu-font-color: #fff !default;
-
-$ty-pushmenu-wrapper-shadow-color: #222 !default;
-$ty-pushmenu-wrapper-shadow-offset: .5rem !default;
-$ty-pushmenu-wrapper-shadow-size: .8rem !default;
-
-@mixin translate3d($x: 0px, $y: 0px) {
-  $z: 0px;
-  transform: translate3d($x, $y, $z);
-  -moz-transform: translate3d($x, $y, $z);
-  -webkit-transform: translate3d($x, $y, $z);
-  -ms-transform: translate3d($x, $y, $z);
-}
-
-@mixin translate2d($x: 0px, $y: 0px) {
-  transform: translateX($x);
-  transform: translateY($y);
-  -moz-transform: translateX($x);
-  -moz-transform: translateY($y);
-  -webkit-transform: translateX($x);
-  -webkit-transform: translateY($y);
-  -ms-transform: translateX($x);
-  -ms-transform: translateY($y);
-}
-
-@mixin transition($property: all, $duration: 500ms, $timeng: ease-out, $delay: 0s) {
-  transition: $property $duration $timeng $delay;
-  -moz-transition: $property $duration $timeng $delay;
-  -webkit-transition: $property $duration $timeng $delay;
-  -o-transition: $property $duration $timeng $delay;
-}
-
-@mixin horizontal {
-  left: 0px;
-  width: 100%;
-  min-width: 100%;
-}
-
-@mixin vertical {
-  top: 0px;
-  height: 100%;
-  min-height: 100%;
-}
-
-@mixin shadow($param) {
-  -webkit-box-shadow: $param;
-  -moz-box-shadow: $param;
-  -o-box-shadow: $param;
-  box-shadow: $param;
-}
-
-@mixin border-radius($param) {
-  border-radius: $param;
-  -webkit-border-radius: $param;
-  -moz-border-radius: $param;
-}
-
-@each $position in $ty-pushmenu-positions {
-
-  .ty-pm-#{$position} {
-    #{$position}: 0px;
-
-    @if ($position == 'bottom') {
-      @include horizontal;
-    }
-    @if ($position == 'top') {
-      @include horizontal;
-    }
-
-    @if ($position == right) {
-      @include vertical;
-    }
-    @if ($position == left) {
-      @include vertical;
-    }
+.small-only, .medium-only {
+  .popover-related-product {
+    display: none !important;
   }
 }
 
-#ty-overlay {
-  position: fixed;
-  background: $ty-pushmenu-overlay-color;
-  z-index: 30;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: none;
-  opacity: 0;
-}
+.popover-related-product {
+  min-width: 20rem;
+  max-width: 28rem;
 
-.ty-simple-spinner {
-  font-size: 0.8rem;
-  display: inline-block;
-  width: 2em;
-  height: 2em;
-  border-radius: 2em;
-  border: 0.325em solid #fff;
-  box-shadow: 0 0 0.325em #233223;
-  animation-name: rotation;
-  animation-duration: 2s;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
+  .popover-content {
+    display: inline-block;
 
-  &:before {
-    content: "";
-    width: 1em;
-    height: 1em;
-    border-radius: 1em;
-    background: #fff;
-    position: absolute;
-    top: -0.5em;
-    left: 50%;
-  }
-}
-
-@keyframes rotation {
-  0% {
-    -webkit-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-    -moz-transform: rotate(720deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-
-.ty-menu {
-  //position: fixed;
-  position: absolute;
-  min-width: 20%;
-  color: $ty-pushmenu-font-color;
-  z-index: 30;
-  display: none;
-
-  .ty-menu-wrapper {
-    overflow-y: auto;
-    overflow-x: hidden;
-    position: relative;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    position: relative;
-    display: block;
-    width: 100%;
-    height: 100%;
-    background: $ty-pushmenu-wrapper-color;
   }
 
-  .menu-page, .inner-menu {
-    display: none;
-    //opacity: 0;
-    position: absolute;
-    z-index: 5;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    //width: 100%;
-    //height: 100%;
-    background: $ty-pushmenu-wrapper-color;
-    &.active, &.default {
-      display: block;
+  .owl-item {
+    border-top: 1px dotted $color-bd-light-gray;
+    padding: 1rem 0.1rem;
+    border-radius: 0;
+
+    &:first-child {
+      border: none;
     }
   }
 
-  ul, ol, li {
+  .hot__item {
+    padding-left: 75px;
+    *zoom: 1;
+    font-size: 11px;
+    border-top: 1px dotted #b7b7b7;
     list-style: none;
-  }
 
-  li {
-    //display: inline-block;
-    //width: 100%;
-    padding: 0.2em 0.3em;
-    box-sizing: border-box;
-    color: $ty-pushmenu-item-color;
-    font-size: $ty-pushmenu-item-font-size;
-
-    @if ($ty-pushmenu-item-border == yes) {
-      border-bottom: 0.0675rem solid $ty-pushmenu-item-border-color;
+    &:after {
+      content: " ";
+      display: table;
+      clear: both;
     }
 
-    a, span {
-      color: $ty-pushmenu-item-color;
-      font-size: inherit;
-      text-decoration: none;
+    &:first-child {
+      border: none;
+      padding-top: 0;
+      padding-right: 2rem;
+    }
 
-      &:hover {
-        text-decoration: underline;
-        text-decoration-style: dotted;
+    .hot__media {
+      float: left;
+      width: 65px;
+      margin-right: 6px;
+      margin-left: -75px;
+
+      .hot__pic {
+        margin-bottom: 10px;
+
+        img {
+          display: block;
+          width: 100%;
+          border: 1px solid #eff5f8;
+          border-radius: 2px;
+        }
+
       }
+    }
 
+    .hot__info {
+      display: inline-block;
+
+    }
+
+    .hot__oldprice {
+      text-decoration: line-through;
+    }
+
+    .hot__price {
+      font-size: 12px;
+      line-height: 1;
+      display: inline-block;
+    }
+
+    .hot__info {
+      overflow: hidden;
+      height: 75px;
+    }
+
+    .hot__title {
+      line-height: 14px;
+      margin-bottom: 2px;
+      overflow: hidden;
+      max-height: 44px;
+    }
+
+    .hot__brand {
+      line-height: 14px;
+      color: #b7b7b7;
+      span {
+        display: block;
+      }
+    }
+
+    .product__actions {
+      display: inline-block;
+      margin-left: -90px;
+      float: left;
+      .bd-btn-by {
+        font-size: .625rem;
+      }
     }
 
   }
 
-  .ty-close-btn {
-    position: absolute;
-    width: 1rem;
-    height: 1rem;
-    @include border-radius(1rem);
-    z-index: 31;
-    background: $ty-pushmenu-wrapper-color;
-    @include shadow(0 0 0.4rem #222);
-
-  }
-}
-
-.ty-menu-left {
-  left: 0;
-  top: 0;
-  bottom: 0;
-  padding-right: 1.6rem;
-
-  .ty-menu-wrapper, .menu-page, .inner-menu {
-    padding: 1rem 1.6rem 1rem 1rem;
-    @include shadow(
-            $ty-pushmenu-wrapper-shadow-offset 0 $ty-pushmenu-wrapper-shadow-size $ty-pushmenu-wrapper-shadow-color
-    );
+  .owl-carousel.owl-carousel-vertical {
+    min-height: 2 * 12rem;
+    width: auto;
   }
 
-  .ty-close-btn {
-    top: 0;
-    right: 0;
+  .hot__list {
+    float: left;
+    position: relative;
+    margin-top: 0;
   }
 
 }
-
-.ty-menu-right {
-  right: 0;
-  top: 0;
-  bottom: 0;
-  padding-left: 1.6rem;
-
-  .ty-menu-wrapper, .menu-page, .inner-menu {
-    padding: 1rem 1rem 1rem 1.6rem;
-    @include shadow(
-                    (-$ty-pushmenu-wrapper-shadow-offset) 0 $ty-pushmenu-wrapper-shadow-size $ty-pushmenu-wrapper-shadow-color
-    );
-  }
-
-  .ty-close-btn {
-    top: 0;
-    left: 0;
-  }
-
-}
-
-.ty-menu-top {
-  right: 0;
-  left: 0;
-  top: 0;
-  padding-bottom: 1.6rem;
-
-  .ty-menu-wrapper, .menu-page, .inner-menu {
-    padding: 1.6rem 1rem 1rem 1rem;
-    @include shadow(
-            0 $ty-pushmenu-wrapper-shadow-offset $ty-pushmenu-wrapper-shadow-size $ty-pushmenu-wrapper-shadow-color
-    );
-  }
-
-  .ty-close-btn {
-    bottom: 0;
-    right: 0;
-  }
-
-}
-
-.ty-menu-bottom {
-  right: 0;
-  left: 0;
-  bottom: 0;
-  padding-top: 1.6rem;
-
-  .ty-menu-wrapper, .menu-page, .inner-menu {
-    padding: 1rem 1rem 1.6rem 1rem;
-    @include shadow(
-            0 (-$ty-pushmenu-wrapper-shadow-offset) $ty-pushmenu-wrapper-shadow-size $ty-pushmenu-wrapper-shadow-color
-    );
-  }
-
-  .ty-close-btn {
-    top: 0;
-    right: 0;
-  }
-
-}
-
-.ty-menu-bottom, .ty-menu-top {
-  max-height: 90%;
-  width: 100%;
-}
-
-.ty-menu-left, .ty-menu-right {
-  max-width: 90%;
-  height: 100%;
-}
-
-
