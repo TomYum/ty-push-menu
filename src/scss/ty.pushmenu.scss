@@ -150,7 +150,8 @@ $ty-pushmenu-wrapper-shadow-size: .8rem !default;
 }
 
 .ty-menu {
-  position: fixed;
+  //position: fixed;
+  position: absolute;
   min-width: 20%;
   color: $ty-pushmenu-font-color;
   z-index: 30;
@@ -312,10 +313,12 @@ $ty-pushmenu-wrapper-shadow-size: .8rem !default;
 
 .ty-menu-bottom, .ty-menu-top {
   max-height: 90%;
+  width: 100%;
 }
 
 .ty-menu-left, .ty-menu-right {
   max-width: 90%;
+  height: 100%;
 }
 
 

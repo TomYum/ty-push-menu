@@ -201,7 +201,7 @@
             });
         this.$wrapper
             .velocity({translateX: -this.positions.x, translateY: -this.positions.y}, this.config.animation.show);
-        this.$body.css('overflow', 'hidden');
+        //this.$body.css('overflow', 'hidden');
         this.$overlay.show().velocity({opacity: 0.8}, this.config.animation.show)
 
         this.__expandedMenus[this.id] = true;
