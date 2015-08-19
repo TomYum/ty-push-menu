@@ -192,6 +192,7 @@
     };
 
     tyPushMenu.prototype._show = function () {
+        $(document).scrollTop(0);
         this.$menuWrapper.show().velocity(
             {translateX: 0, translateY: 0},
             {
@@ -338,6 +339,7 @@
 
     tyPushMenu.prototype.__showPage = function ($page) {
         if ($page) {
+            $(document).scrollTop(0);
             $page.show().velocity(
                 {
                     translateX: 0,
