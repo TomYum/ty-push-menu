@@ -192,7 +192,12 @@
     };
 
     tyPushMenu.prototype._show = function () {
-        if (this.config.position !== 'bottom') $(document).scrollTop(0);
+        if (this.config.position !== 'bottom') {
+            $(document).scrollTop(0);
+        }else{
+            $(document).scrollTop( $(document).height() );
+        }
+
         this.$menuWrapper.show().velocity(
             {translateX: 0, translateY: 0},
             {
